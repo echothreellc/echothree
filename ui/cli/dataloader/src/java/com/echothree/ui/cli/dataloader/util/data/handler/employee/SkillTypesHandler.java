@@ -44,30 +44,14 @@ public class SkillTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("skillType")) {
-            String skillTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("skillTypeName"))
-                    skillTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var form = EmployeeFormFactory.getCreateSkillTypeForm();
                 
-                form.setSkillTypeName(skillTypeName);
-                form.setIsDefault(isDefault);
-                form.setSortOrder(sortOrder);
+                form.set(getAttrsMap(attrs));
                 
                 employeeService.createSkillType(initialDataParser.getUserVisit(), form);
                 
-                initialDataParser.pushHandler(new SkillTypeHandler(initialDataParser, this, skillTypeName));
+                initialDataParser.pushHandler(new SkillTypeHandler(initialDataParser, this, form.getSkillTypeName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

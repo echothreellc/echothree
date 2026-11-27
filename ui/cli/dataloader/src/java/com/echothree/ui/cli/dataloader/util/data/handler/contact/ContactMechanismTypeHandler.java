@@ -47,23 +47,11 @@ public class ContactMechanismTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("contactMechanismTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var createContactMechanismTypeDescriptionForm = ContactFormFactory.getCreateContactMechanismTypeDescriptionForm();
                 
                 createContactMechanismTypeDescriptionForm.setContactMechanismTypeName(contactMechanismTypeName);
-                createContactMechanismTypeDescriptionForm.setLanguageIsoName(languageIsoName);
-                createContactMechanismTypeDescriptionForm.setDescription(description);
+                createContactMechanismTypeDescriptionForm.set(getAttrsMap(attrs));
                 
                 contactService.createContactMechanismTypeDescription(initialDataParser.getUserVisit(), createContactMechanismTypeDescriptionForm);
             } catch (Exception e) {

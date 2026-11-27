@@ -47,42 +47,22 @@ public class ContentWebAddressHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("contentWebAddressDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var createContentWebAddressDescriptionForm = ContentFormFactory.getCreateContentWebAddressDescriptionForm();
                 
                 createContentWebAddressDescriptionForm.setContentWebAddressName(contentWebAddressName);
-                createContentWebAddressDescriptionForm.setLanguageIsoName(languageIsoName);
-                createContentWebAddressDescriptionForm.setDescription(description);
+                createContentWebAddressDescriptionForm.set(getAttrsMap(attrs));
                 
                 contentService.createContentWebAddressDescription(initialDataParser.getUserVisit(), createContentWebAddressDescriptionForm);
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         } else if(localName.equals("contentWebAddressServer")) {
-            String serverName = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("serverName"))
-                    serverName = attrs.getValue(i);
-            }
-            
             try {
                 var createContentWebAddressServerForm = ContentFormFactory.getCreateContentWebAddressServerForm();
                 
                 createContentWebAddressServerForm.setContentWebAddressName(contentWebAddressName);
-                createContentWebAddressServerForm.setServerName(serverName);
+                createContentWebAddressServerForm.set(getAttrsMap(attrs));
                 
                 contentService.createContentWebAddressServer(initialDataParser.getUserVisit(), createContentWebAddressServerForm);
             } catch (Exception e) {

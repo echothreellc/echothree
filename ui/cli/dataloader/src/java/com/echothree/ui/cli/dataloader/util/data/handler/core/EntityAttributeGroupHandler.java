@@ -51,25 +51,13 @@ public class EntityAttributeGroupHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("entityAttributeGroupDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var form = CoreFormFactory.getCreateEntityAttributeGroupDescriptionForm();
                 
                 form.setComponentVendorName(componentVendorName);
                 form.setEntityTypeName(entityTypeName);
                 form.setEntityAttributeGroupName(entityAttributeGroupName);
-                form.setLanguageIsoName(languageIsoName);
-                form.setDescription(description);
+                form.set(getAttrsMap(attrs));
                 
                 coreService.createEntityAttributeGroupDescription(initialDataParser.getUserVisit(), form);
             } catch (Exception e) {

@@ -44,34 +44,14 @@ public class UseNameElementsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("useNameElement")) {
-            String useNameElementName = null;
-            String offset = null;
-            String length = null;
-            String validationPattern = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("useNameElementName"))
-                    useNameElementName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("offset"))
-                    offset = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("length"))
-                    length = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("validationPattern"))
-                    validationPattern = attrs.getValue(i);
-            }
-            
             try {
                 var form = OfferFormFactory.getCreateUseNameElementForm();
                 
-                form.setUseNameElementName(useNameElementName);
-                form.setOffset(offset);
-                form.setLength(length);
-                form.setValidationPattern(validationPattern);
+                form.set(getAttrsMap(attrs));
                 
                 offerService.createUseNameElement(initialDataParser.getUserVisit(), form);
                 
-                initialDataParser.pushHandler(new UseNameElementHandler(initialDataParser, this, useNameElementName));
+                initialDataParser.pushHandler(new UseNameElementHandler(initialDataParser, this, form.getUseNameElementName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

@@ -48,20 +48,9 @@ public class AssociateProgramHandler
             throws SAXException {
         if(localName.equals("associateProgramDescription")) {
             var commandForm = AssociateFormFactory.getCreateAssociateProgramDescriptionForm();
-            String attrLanguageIsoName = null;
-            String attrDescription = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    attrLanguageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    attrDescription = attrs.getValue(i);
-            }
             
             commandForm.setAssociateProgramName(associateProgramName);
-            commandForm.setLanguageIsoName(attrLanguageIsoName);
-            commandForm.setDescription(attrDescription);
+            commandForm.set(getAttrsMap(attrs));
             
             checkCommandResult(associateService.createAssociateProgramDescription(initialDataParser.getUserVisit(), commandForm));
         }

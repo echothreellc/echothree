@@ -47,23 +47,11 @@ public class IconUsageTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("iconUsageTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var form = IconFormFactory.getCreateIconUsageTypeDescriptionForm();
                 
                 form.setIconUsageTypeName(iconUsageTypeName);
-                form.setLanguageIsoName(languageIsoName);
-                form.setDescription(description);
+                form.set(getAttrsMap(attrs));
                 
                 iconService.createIconUsageTypeDescription(initialDataParser.getUserVisit(), form);
             } catch (Exception e) {

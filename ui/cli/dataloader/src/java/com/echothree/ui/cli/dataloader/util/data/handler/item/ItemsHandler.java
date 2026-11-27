@@ -46,24 +46,9 @@ public class ItemsHandler
             throws SAXException {
         if(localName.equals("item")) {
             String entityRef = null;
-            String itemName = null;
-            String companyName = null;
-            String commandAction = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                switch (attrs.getQName(i)) {
-                    case "itemName":
-                        itemName = attrs.getValue(i);
-                        break;
-                    case "companyName":
-                        companyName = attrs.getValue(i);
-                        break;
-                    case "commandAction":
-                        commandAction = attrs.getValue(i);
-                        break;
-                }
-            }
+            var itemName = attrs.getValue("itemName");
+            var companyName = attrs.getValue("companyName");
+            var commandAction = attrs.getValue("commandAction");
             
             if(commandAction == null || commandAction.equals("create")) {
                 var commandForm = ItemFormFactory.getCreateItemForm();

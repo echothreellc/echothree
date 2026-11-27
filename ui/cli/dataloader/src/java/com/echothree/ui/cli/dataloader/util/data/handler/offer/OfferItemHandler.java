@@ -49,44 +49,12 @@ public class OfferItemHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("offerItemPrice")) {
-            String inventoryConditionName = null;
-            String unitOfMeasureTypeName = null;
-            String currencyIsoName = null;
-            String unitPrice = null;
-            String minimumUnitPrice = null;
-            String maximumUnitPrice = null;
-            String unitPriceIncrement = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("inventoryConditionName"))
-                    inventoryConditionName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("unitOfMeasureTypeName"))
-                    unitOfMeasureTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("currencyIsoName"))
-                    currencyIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("unitPrice"))
-                    unitPrice = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("minimumUnitPrice"))
-                    minimumUnitPrice = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("maximumUnitPrice"))
-                    maximumUnitPrice = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("unitPriceIncrement"))
-                    unitPriceIncrement = attrs.getValue(i);
-            }
-            
             try {
                 var form = OfferFormFactory.getCreateOfferItemPriceForm();
                 
                 form.setOfferName(offerName);
                 form.setItemName(itemName);
-                form.setInventoryConditionName(inventoryConditionName);
-                form.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
-                form.setCurrencyIsoName(currencyIsoName);
-                form.setUnitPrice(unitPrice);
-                form.setMinimumUnitPrice(minimumUnitPrice);
-                form.setMaximumUnitPrice(maximumUnitPrice);
-                form.setUnitPriceIncrement(unitPriceIncrement);
+                form.set(getAttrsMap(attrs));
                 
                 offerService.createOfferItemPrice(initialDataParser.getUserVisit(), form);
             } catch (Exception e) {

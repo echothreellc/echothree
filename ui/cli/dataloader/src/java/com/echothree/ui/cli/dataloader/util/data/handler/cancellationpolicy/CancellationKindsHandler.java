@@ -44,34 +44,14 @@ public class CancellationKindsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("cancellationKind")) {
-            String cancellationKindName = null;
-            String cancellationSequenceTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("cancellationKindName"))
-                    cancellationKindName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("cancellationSequenceTypeName"))
-                    cancellationSequenceTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = CancellationPolicyFormFactory.getCreateCancellationKindForm();
                 
-                commandForm.setCancellationKindName(cancellationKindName);
-                commandForm.setCancellationSequenceTypeName(cancellationSequenceTypeName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(cancellationPolicyService.createCancellationKind(initialDataParser.getUserVisit(), commandForm));
                 
-                initialDataParser.pushHandler(new CancellationKindHandler(initialDataParser, this, cancellationKindName));
+                initialDataParser.pushHandler(new CancellationKindHandler(initialDataParser, this, commandForm.getCancellationKindName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

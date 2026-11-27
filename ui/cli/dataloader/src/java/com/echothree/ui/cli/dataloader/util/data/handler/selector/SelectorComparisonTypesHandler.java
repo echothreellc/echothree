@@ -44,30 +44,14 @@ public class SelectorComparisonTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("selectorComparisonType")) {
-            String selectorComparisonTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("selectorComparisonTypeName"))
-                    selectorComparisonTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var form = SelectorFormFactory.getCreateSelectorComparisonTypeForm();
                 
-                form.setSelectorComparisonTypeName(selectorComparisonTypeName);
-                form.setIsDefault(isDefault);
-                form.setSortOrder(sortOrder);
+                form.set(getAttrsMap(attrs));
                 
                 selectorService.createSelectorComparisonType(initialDataParser.getUserVisit(), form);
                 
-                initialDataParser.pushHandler(new SelectorComparisonTypeHandler(initialDataParser, this, selectorComparisonTypeName));
+                initialDataParser.pushHandler(new SelectorComparisonTypeHandler(initialDataParser, this, form.getSelectorComparisonTypeName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

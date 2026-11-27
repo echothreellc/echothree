@@ -23,6 +23,8 @@ import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Map;
+import java.util.Set;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -33,11 +35,7 @@ public class CommentsHandler
     String entityRef;
     
     boolean inComment = false;
-    String commentedByUsername = null;
-    String commentTypeName = null;
-    String description = null;
-    String mimeTypeName = null;
-    String stringComment = null;
+    private Map<String, Object> commentAttrs;
     char []clobComment = null;
     Set<String> commentUsages = new HashSet<>();
     
@@ -58,26 +56,15 @@ public class CommentsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("comment")) {
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("commentedByUsername"))
-                    commentedByUsername = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("commentTypeName"))
-                    commentTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("mimeTypeName"))
-                    mimeTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("stringComment"))
-                    stringComment = attrs.getValue(i);
-            }
+            commentAttrs = getAttrsMap(attrs);
+            commentAttrs.keySet().removeAll(Set.of("EntityRef", "ClobComment"));
             
             inComment = true;
         } else if(inComment && localName.equals("commentUsage")) {
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("commentUsageTypeName"))
-                    commentUsages.add(attrs.getValue(i));
+            var commentUsageTypeName = attrs.getValue("commentUsageTypeName");
+
+            if(commentUsageTypeName != null) {
+                commentUsages.add(commentUsageTypeName);
             }
         }
     }
@@ -103,12 +90,8 @@ public class CommentsHandler
             var form = CommentFormFactory.getCreateCommentForm();
             
             form.setEntityRef(entityRef);
-            form.setCommentedByUsername(commentedByUsername);
-            form.setCommentTypeName(commentTypeName);
-            form.setDescription(description);
-            form.setMimeTypeName(mimeTypeName);
             form.setClobComment(clobComment == null? null: new String(clobComment));
-            form.setStringComment(stringComment);
+            form.set(commentAttrs);
 
             var commandResult = commentService.createComment(initialDataParser.getUserVisit(), form);
             
@@ -128,12 +111,8 @@ public class CommentsHandler
             }
             
             inComment = false;
-            commentedByUsername = null;
-            commentTypeName = null;
-            description = null;
-            mimeTypeName = null;
+            commentAttrs = null;
             clobComment = null;
-            stringComment = null;
             commentUsages.clear();
         } else if(localName.equals("comments")) {
             initialDataParser.popHandler();

@@ -47,124 +47,55 @@ public class CancellationKindHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("cancellationKindDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = CancellationPolicyFormFactory.getCreateCancellationKindDescriptionForm();
                 
                 commandForm.setCancellationKindName(cancellationKindName);
-                commandForm.setLanguageIsoName(languageIsoName);
-                commandForm.setDescription(description);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(cancellationPolicyService.createCancellationKindDescription(initialDataParser.getUserVisit(), commandForm));
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         }else if(localName.equals("cancellationPolicy")) {
-            String cancellationPolicyName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("cancellationPolicyName"))
-                    cancellationPolicyName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = CancellationPolicyFormFactory.getCreateCancellationPolicyForm();
                 
                 commandForm.setCancellationKindName(cancellationKindName);
-                commandForm.setCancellationPolicyName(cancellationPolicyName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(cancellationPolicyService.createCancellationPolicy(initialDataParser.getUserVisit(), commandForm));
                 
-                initialDataParser.pushHandler(new CancellationPolicyHandler(initialDataParser, this, cancellationKindName, cancellationPolicyName));
+                initialDataParser.pushHandler(new CancellationPolicyHandler(initialDataParser, this, cancellationKindName,
+                        commandForm.getCancellationPolicyName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         } else if(localName.equals("cancellationReason")) {
-            String cancellationReasonName = null;
-            String isDefault = null;
-            String sortOrder = null;
-            String description = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("cancellationReasonName"))
-                    cancellationReasonName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = CancellationPolicyFormFactory.getCreateCancellationReasonForm();
                 
                 commandForm.setCancellationKindName(cancellationKindName);
-                commandForm.setCancellationReasonName(cancellationReasonName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
-                commandForm.setDescription(description);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(cancellationPolicyService.createCancellationReason(initialDataParser.getUserVisit(), commandForm));
                 
-                initialDataParser.pushHandler(new CancellationReasonHandler(initialDataParser, this, cancellationKindName, cancellationReasonName));
+                initialDataParser.pushHandler(new CancellationReasonHandler(initialDataParser, this, cancellationKindName,
+                        commandForm.getCancellationReasonName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         } else if(localName.equals("cancellationType")) {
-            String cancellationTypeName = null;
-            String cancellationSequenceName = null;
-            String isDefault = null;
-            String sortOrder = null;
-            String description = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("cancellationTypeName"))
-                    cancellationTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("cancellationSequenceName"))
-                    cancellationSequenceName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = CancellationPolicyFormFactory.getCreateCancellationTypeForm();
                 
                 commandForm.setCancellationKindName(cancellationKindName);
-                commandForm.setCancellationTypeName(cancellationTypeName);
-                commandForm.setCancellationSequenceName(cancellationSequenceName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
-                commandForm.setDescription(description);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(cancellationPolicyService.createCancellationType(initialDataParser.getUserVisit(), commandForm));
                 
-                initialDataParser.pushHandler(new CancellationTypeHandler(initialDataParser, this, cancellationKindName, cancellationTypeName));
+                initialDataParser.pushHandler(new CancellationTypeHandler(initialDataParser, this, cancellationKindName,
+                        commandForm.getCancellationTypeName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

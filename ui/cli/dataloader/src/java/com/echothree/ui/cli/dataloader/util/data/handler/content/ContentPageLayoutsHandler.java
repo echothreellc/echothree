@@ -44,30 +44,15 @@ public class ContentPageLayoutsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("contentPageLayout")) {
-            String contentPageLayoutName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("contentPageLayoutName"))
-                    contentPageLayoutName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var createContentPageLayoutForm = ContentFormFactory.getCreateContentPageLayoutForm();
                 
-                createContentPageLayoutForm.setContentPageLayoutName(contentPageLayoutName);
-                createContentPageLayoutForm.setIsDefault(isDefault);
-                createContentPageLayoutForm.setSortOrder(sortOrder);
+                createContentPageLayoutForm.set(getAttrsMap(attrs));
                 
                 contentService.createContentPageLayout(initialDataParser.getUserVisit(), createContentPageLayoutForm);
                 
-                initialDataParser.pushHandler(new ContentPageLayoutHandler(initialDataParser, this, contentPageLayoutName));
+                initialDataParser.pushHandler(new ContentPageLayoutHandler(initialDataParser, this,
+                        createContentPageLayoutForm.getContentPageLayoutName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

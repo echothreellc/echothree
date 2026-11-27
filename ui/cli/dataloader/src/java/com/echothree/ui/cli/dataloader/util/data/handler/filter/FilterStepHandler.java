@@ -53,17 +53,6 @@ public class FilterStepHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("filterStepDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = FilterFormFactory.getCreateFilterStepDescriptionForm();
                 
@@ -71,28 +60,13 @@ public class FilterStepHandler
                 commandForm.setFilterTypeName(filterTypeName);
                 commandForm.setFilterName(filterName);
                 commandForm.setFilterStepName(filterStepName);
-                commandForm.setLanguageIsoName(languageIsoName);
-                commandForm.setDescription(description);
+                commandForm.set(getAttrsMap(attrs));
                 
                 filterService.createFilterStepDescription(initialDataParser.getUserVisit(), commandForm);
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         } else if(localName.equals("filterStepElement")) {
-            String filterStepElementName = null;
-            String filterItemSelectorName = null;
-            String filterAdjustmentName = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("filterStepElementName"))
-                    filterStepElementName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("filterItemSelectorName"))
-                    filterItemSelectorName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("filterAdjustmentName"))
-                    filterAdjustmentName = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = FilterFormFactory.getCreateFilterStepElementForm();
                 
@@ -100,13 +74,12 @@ public class FilterStepHandler
                 commandForm.setFilterTypeName(filterTypeName);
                 commandForm.setFilterName(filterName);
                 commandForm.setFilterStepName(filterStepName);
-                commandForm.setFilterStepElementName(filterStepElementName);
-                commandForm.setFilterItemSelectorName(filterItemSelectorName);
-                commandForm.setFilterAdjustmentName(filterAdjustmentName);
+                commandForm.set(getAttrsMap(attrs));
                 
                 filterService.createFilterStepElement(initialDataParser.getUserVisit(), commandForm);
                 
-                initialDataParser.pushHandler(new FilterStepElementHandler(initialDataParser, this, filterKindName, filterTypeName, filterName, filterStepName, filterStepElementName));
+                initialDataParser.pushHandler(new FilterStepElementHandler(initialDataParser, this, filterKindName,
+                        filterTypeName, filterName, filterStepName, commandForm.getFilterStepElementName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

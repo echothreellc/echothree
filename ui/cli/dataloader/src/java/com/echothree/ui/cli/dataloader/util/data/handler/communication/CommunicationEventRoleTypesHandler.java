@@ -44,26 +44,15 @@ public class CommunicationEventRoleTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("communicationEventRoleType")) {
-            String communicationEventRoleTypeName = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("communicationEventRoleTypeName"))
-                    communicationEventRoleTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var form = CommunicationFormFactory.getCreateCommunicationEventRoleTypeForm();
                 
-                form.setCommunicationEventRoleTypeName(communicationEventRoleTypeName);
-                form.setSortOrder(sortOrder);
+                form.set(getAttrsMap(attrs));
                 
                 communicationService.createCommunicationEventRoleType(initialDataParser.getUserVisit(), form);
                 
-                initialDataParser.pushHandler(new CommunicationEventRoleTypeHandler(initialDataParser, this, communicationEventRoleTypeName));
+                initialDataParser.pushHandler(new CommunicationEventRoleTypeHandler(initialDataParser, this,
+                        form.getCommunicationEventRoleTypeName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

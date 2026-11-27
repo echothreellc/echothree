@@ -48,23 +48,11 @@ public class OrderTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("orderTypeDescription")) {
-            String attrLanguageIsoName = null;
-            String attrDescription = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    attrLanguageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    attrDescription = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = OrderFormFactory.getCreateOrderTypeDescriptionForm();
                 
                 commandForm.setOrderTypeName(orderTypeName);
-                commandForm.setLanguageIsoName(attrLanguageIsoName);
-                commandForm.setDescription(attrDescription);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(orderService.createOrderTypeDescription(initialDataParser.getUserVisit(), commandForm));
             } catch (Exception e) {
@@ -89,31 +77,15 @@ public class OrderTypeHandler
 
             initialDataParser.pushHandler(new OrderPriorityHandler(initialDataParser, this, orderTypeName, commandForm.getOrderPriorityName()));
         } else if(localName.equals("orderAliasType")) {
-            String orderAliasTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("orderAliasTypeName"))
-                    orderAliasTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = OrderFormFactory.getCreateOrderAliasTypeForm();
                 
                 commandForm.setOrderTypeName(orderTypeName);
-                commandForm.setOrderAliasTypeName(orderAliasTypeName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(orderService.createOrderAliasType(initialDataParser.getUserVisit(), commandForm));
                 
-                initialDataParser.pushHandler(new OrderAliasTypeHandler(initialDataParser, this, orderTypeName, orderAliasTypeName));
+                initialDataParser.pushHandler(new OrderAliasTypeHandler(initialDataParser, this, orderTypeName, commandForm.getOrderAliasTypeName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

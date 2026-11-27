@@ -44,26 +44,12 @@ public class PartyTypeUseTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("partyTypeUseType")) {
-            String partyTypeUseTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var partyTypeUseTypeName = attrs.getValue("partyTypeUseTypeName");
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("partyTypeUseTypeName"))
-                    partyTypeUseTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var form = PartyFormFactory.getCreatePartyTypeUseTypeForm();
                 
-                form.setPartyTypeUseTypeName(partyTypeUseTypeName);
-                form.setIsDefault(isDefault);
-                form.setSortOrder(sortOrder);
+                form.set(getAttrsMap(attrs));
                 
                 partyService.createPartyTypeUseType(initialDataParser.getUserVisit(), form);
             } catch (Exception e) {

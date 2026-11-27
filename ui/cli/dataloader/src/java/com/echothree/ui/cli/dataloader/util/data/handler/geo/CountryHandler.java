@@ -63,122 +63,44 @@ public class CountryHandler
             throws SAXException {
         if(localName.equals("geoCodeDescription")) {
             var commandForm = GeoFormFactory.getCreateGeoCodeDescriptionForm();
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
             
             commandForm.setGeoCodeName(countryGeoCodeName);
-            commandForm.setLanguageIsoName(languageIsoName);
-            commandForm.setDescription(description);
+            commandForm.set(getAttrsMap(attrs));
             
             geoService.createGeoCodeDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("geoCodeLanguage")) {
             var commandForm = GeoFormFactory.getCreateGeoCodeLanguageForm();
             
             commandForm.setGeoCodeName(countryGeoCodeName);
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                var attrQName = attrs.getQName(i);
-                var attrValue = attrs.getValue(i);
-                
-                if(attrQName.equals("languageIsoName"))
-                    commandForm.setLanguageIsoName(attrValue);
-                else if(attrQName.equals("isDefault"))
-                    commandForm.setIsDefault(attrValue);
-                else if(attrQName.equals("sortOrder"))
-                    commandForm.setSortOrder(attrValue);
-            }
+            commandForm.set(getAttrsMap(attrs));
             
             geoService.createGeoCodeLanguage(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("geoCodeCurrency")) {
             var commandForm = GeoFormFactory.getCreateGeoCodeCurrencyForm();
             
             commandForm.setGeoCodeName(countryGeoCodeName);
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                var attrQName = attrs.getQName(i);
-                var attrValue = attrs.getValue(i);
-                
-                if(attrQName.equals("currencyIsoName"))
-                    commandForm.setCurrencyIsoName(attrValue);
-                else if(attrQName.equals("isDefault"))
-                    commandForm.setIsDefault(attrValue);
-                else if(attrQName.equals("sortOrder"))
-                    commandForm.setSortOrder(attrValue);
-            }
+            commandForm.set(getAttrsMap(attrs));
             
             geoService.createGeoCodeCurrency(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("geoCodeTimeZone")) {
             var commandForm = GeoFormFactory.getCreateGeoCodeTimeZoneForm();
             
             commandForm.setGeoCodeName(countryGeoCodeName);
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                var attrQName = attrs.getQName(i);
-                var attrValue = attrs.getValue(i);
-                
-                if(attrQName.equals("javaTimeZoneName"))
-                    commandForm.setJavaTimeZoneName(attrValue);
-                else if(attrQName.equals("isDefault"))
-                    commandForm.setIsDefault(attrValue);
-                else if(attrQName.equals("sortOrder"))
-                    commandForm.setSortOrder(attrValue);
-            }
+            commandForm.set(getAttrsMap(attrs));
             
             geoService.createGeoCodeTimeZone(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("geoCodeDateTimeFormat")) {
             var commandForm = GeoFormFactory.getCreateGeoCodeDateTimeFormatForm();
             
             commandForm.setGeoCodeName(countryGeoCodeName);
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                var attrQName = attrs.getQName(i);
-                var attrValue = attrs.getValue(i);
-                
-                if(attrQName.equals("dateTimeFormatName"))
-                    commandForm.setDateTimeFormatName(attrValue);
-                else if(attrQName.equals("isDefault"))
-                    commandForm.setIsDefault(attrValue);
-                else if(attrQName.equals("sortOrder"))
-                    commandForm.setSortOrder(attrValue);
-            }
+            commandForm.set(getAttrsMap(attrs));
             
             geoService.createGeoCodeDateTimeFormat(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("zipCode")) {
             var commandForm = GeoFormFactory.getCreateZipCodeForm();
-            String zipCodeName = null;
-            String isDefault = null;
-            String sortOrder = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("zipCodeName"))
-                    zipCodeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
             
             commandForm.setCountryGeoCodeName(countryGeoCodeName);
-            commandForm.setZipCodeName(zipCodeName);
-            commandForm.setIsDefault(isDefault);
-            commandForm.setSortOrder(sortOrder);
-            commandForm.setDescription(description);
+            commandForm.set(getAttrsMap(attrs));
 
             var commandResult = geoService.createZipCode(initialDataParser.getUserVisit(), commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -209,32 +131,9 @@ public class CountryHandler
                     commandForm.getTaxClassificationName()));
         } else if(localName.equals("state")) {
             var commandForm = GeoFormFactory.getCreateStateForm();
-            String stateName = null;
-            String postal2Letter = null;
-            String isDefault = null;
-            String sortOrder = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("stateName"))
-                    stateName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("postal2Letter"))
-                    postal2Letter = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
             
             commandForm.setCountryGeoCodeName(countryGeoCodeName);
-            commandForm.setStateName(stateName);
-            commandForm.setPostal2Letter(postal2Letter);
-            commandForm.setIsDefault(isDefault);
-            commandForm.setSortOrder(sortOrder);
-            commandForm.setDescription(description);
+            commandForm.set(getAttrsMap(attrs));
 
             var commandResult = geoService.createState(initialDataParser.getUserVisit(), commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -245,16 +144,9 @@ public class CountryHandler
             initialDataParser.pushHandler(new StateHandler(initialDataParser, this, stateGeoCodeName, stateEntityRef));
         } else if(localName.equals("geoCodeTax")) {
             var commandForm = TaxFormFactory.getCreateGeoCodeTaxForm();
-            String taxName = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("taxName"))
-                    taxName = attrs.getValue(i);
-            }
             
             commandForm.setGeoCodeName(countryGeoCodeName);
-            commandForm.setTaxName(taxName);
+            commandForm.set(getAttrsMap(attrs));
             
             taxService.createGeoCodeTax(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("entityAttributes")) {

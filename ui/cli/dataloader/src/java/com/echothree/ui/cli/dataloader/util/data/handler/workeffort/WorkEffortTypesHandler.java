@@ -46,14 +46,13 @@ public class WorkEffortTypesHandler
         if(localName.equals("workEffortType")) {
             try {
                 var commandForm = WorkEffortFormFactory.getCreateWorkEffortTypeForm();
-                var attrsMap = getAttrsMap(attrs);
-                
-                commandForm.set(attrsMap);
+
+                commandForm.set(getAttrsMap(attrs));
                 
                 workEffortService.createWorkEffortType(initialDataParser.getUserVisit(), commandForm);
                 
                 initialDataParser.pushHandler(new WorkEffortTypeHandler(initialDataParser, this,
-                        (String)attrsMap.get("WorkEffortTypeName")));
+                        commandForm.getWorkEffortTypeName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

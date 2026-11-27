@@ -48,58 +48,27 @@ public class SubscriptionKindHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("subscriptionKindDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = SubscriptionFormFactory.getCreateSubscriptionKindDescriptionForm();
                 
                 commandForm.setSubscriptionKindName(subscriptionKindName);
-                commandForm.setLanguageIsoName(languageIsoName);
-                commandForm.setDescription(description);
+                commandForm.set(getAttrsMap(attrs));
                 
                 subscriptionService.createSubscriptionKindDescription(initialDataParser.getUserVisit(), commandForm);
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         } else if(localName.equals("subscriptionType")) {
-            String subscriptionTypeName = null;
-            String subscriptionSequenceName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("subscriptionTypeName"))
-                    subscriptionTypeName = attrs.getValue(i);
-                if(attrs.getQName(i).equals("subscriptionSequenceName"))
-                    subscriptionSequenceName = attrs.getValue(i);
-                if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = SubscriptionFormFactory.getCreateSubscriptionTypeForm();
                 
                 commandForm.setSubscriptionKindName(subscriptionKindName);
-                commandForm.setSubscriptionTypeName(subscriptionTypeName);
-                commandForm.setSubscriptionSequenceName(subscriptionSequenceName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
+                commandForm.set(getAttrsMap(attrs));
                 
                 subscriptionService.createSubscriptionType(initialDataParser.getUserVisit(), commandForm);
                 
-                initialDataParser.pushHandler(new SubscriptionTypeHandler(initialDataParser, this, subscriptionKindName, subscriptionTypeName));
+                initialDataParser.pushHandler(new SubscriptionTypeHandler(initialDataParser, this, subscriptionKindName,
+                        commandForm.getSubscriptionTypeName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

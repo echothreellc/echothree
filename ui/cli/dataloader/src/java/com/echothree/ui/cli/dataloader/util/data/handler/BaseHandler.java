@@ -23,8 +23,8 @@ import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.form.BaseEdit;
 import com.echothree.util.common.form.BaseEditForm;
 import com.echothree.util.common.form.BaseSpec;
-import com.echothree.util.common.string.StringUtils;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import javax.naming.NamingException;
 import org.slf4j.Logger;
@@ -110,7 +110,7 @@ public abstract class BaseHandler {
         }
     }
 
-    protected void checkCommandResult(CommandResult commandResult) {
+    protected void checkCommandResult(CommandResult<?> commandResult) {
         if(doVerbose || (commandResult.hasErrors() && doErrors)) {
             var executionResult = commandResult.getExecutionResult();
             
@@ -133,8 +133,17 @@ public abstract class BaseHandler {
         var attrsMap = new HashMap<String, Object>();
         var count = attrs.getLength();
 
-        for(var i = 0 ; i < count ; i++) {
-            attrsMap.put(StringUtils.getInstance().upperCaseFirstCharacter(attrs.getQName(i)), attrs.getValue(i));
+        for(var i = 0; i < count; i++) {
+            var attributeName = attrs.getQName(i);
+            if(!attributeName.isEmpty()) {
+                var fieldName = attributeName.substring(0, 1).toUpperCase(Locale.ROOT) + attributeName.substring(1);
+
+                // These form properties accept structured values, while XML attributes are strings.
+                switch(fieldName) {
+                    case "Limits", "Options", "TransferProperties" -> { }
+                    default -> attrsMap.put(fieldName, attrs.getValue(i));
+                }
+            }
         }
         
         return attrsMap;

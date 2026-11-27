@@ -44,30 +44,14 @@ public class GendersHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("gender")) {
-            String genderName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("genderName"))
-                    genderName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = PartyFormFactory.getCreateGenderForm();
                 
-                commandForm.setGenderName(genderName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
+                commandForm.set(getAttrsMap(attrs));
                 
                 partyService.createGender(initialDataParser.getUserVisit(), commandForm);
                 
-                initialDataParser.pushHandler(new GenderHandler(initialDataParser, this, genderName));
+                initialDataParser.pushHandler(new GenderHandler(initialDataParser, this, commandForm.getGenderName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

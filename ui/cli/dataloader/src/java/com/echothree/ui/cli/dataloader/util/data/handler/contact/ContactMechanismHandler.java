@@ -57,54 +57,25 @@ public class ContactMechanismHandler
             throws SAXException {
         if(localName.equals("partyContactMechanismPurpose")) {
             var form = ContactFormFactory.getCreatePartyContactMechanismPurposeForm();
-            String contactMechanismPurposeName = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("contactMechanismPurposeName"))
-                    contactMechanismPurposeName = attrs.getValue(i);
-            }
             
             form.setPartyName(partyName);
             form.setContactMechanismName(contactMechanismName);
-            form.setContactMechanismPurposeName(contactMechanismPurposeName);
+            form.set(getAttrsMap(attrs));
             
             contactService.createPartyContactMechanismPurpose(initialDataParser.getUserVisit(), form);
         } else if(localName.equals("contactMechanismAlias")) {
             var form = ContactFormFactory.getCreateContactMechanismAliasForm();
-            String contactMechanismAliasTypeName = null;
-            String alias = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("contactMechanismAliasTypeName"))
-                    contactMechanismAliasTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("alias"))
-                    alias = attrs.getValue(i);
-            }
             
             form.setContactMechanismName(contactMechanismName);
-            form.setContactMechanismAliasTypeName(contactMechanismAliasTypeName);
-            form.setAlias(alias);
+            form.set(getAttrsMap(attrs));
             
             contactService.createContactMechanismAlias(initialDataParser.getUserVisit(), form);
         } else if(localName.equals("partyContactMechanismAlias")) {
             var form = ContactFormFactory.getCreatePartyContactMechanismAliasForm();
-            String contactMechanismAliasTypeName = null;
-            String alias = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("contactMechanismAliasTypeName"))
-                    contactMechanismAliasTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("alias"))
-                    alias = attrs.getValue(i);
-            }
             
             form.setPartyName(partyName);
             form.setContactMechanismName(contactMechanismName);
-            form.setContactMechanismAliasTypeName(contactMechanismAliasTypeName);
-            form.setAlias(alias);
+            form.set(getAttrsMap(attrs));
             
             contactService.createPartyContactMechanismAlias(initialDataParser.getUserVisit(), form);
         } else if(localName.equals("partyPaymentMethods")) {

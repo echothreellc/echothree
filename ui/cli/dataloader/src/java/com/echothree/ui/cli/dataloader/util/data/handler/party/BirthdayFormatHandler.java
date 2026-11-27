@@ -47,23 +47,11 @@ public class BirthdayFormatHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("birthdayFormatDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = PartyFormFactory.getCreateBirthdayFormatDescriptionForm();
                 
                 commandForm.setBirthdayFormatName(birthdayFormatName);
-                commandForm.setLanguageIsoName(languageIsoName);
-                commandForm.setDescription(description);
+                commandForm.set(getAttrsMap(attrs));
                 
                 partyService.createBirthdayFormatDescription(initialDataParser.getUserVisit(), commandForm);
             } catch (Exception e) {

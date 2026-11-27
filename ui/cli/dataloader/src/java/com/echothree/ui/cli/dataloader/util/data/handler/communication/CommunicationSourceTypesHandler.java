@@ -44,30 +44,14 @@ public class CommunicationSourceTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("communicationSourceType")) {
-            String communicationSourceTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("communicationSourceTypeName"))
-                    communicationSourceTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var form = CommunicationFormFactory.getCreateCommunicationSourceTypeForm();
                 
-                form.setCommunicationSourceTypeName(communicationSourceTypeName);
-                form.setIsDefault(isDefault);
-                form.setSortOrder(sortOrder);
+                form.set(getAttrsMap(attrs));
                 
                 communicationService.createCommunicationSourceType(initialDataParser.getUserVisit(), form);
                 
-                initialDataParser.pushHandler(new CommunicationSourceTypeHandler(initialDataParser, this, communicationSourceTypeName));
+                initialDataParser.pushHandler(new CommunicationSourceTypeHandler(initialDataParser, this, form.getCommunicationSourceTypeName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

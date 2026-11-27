@@ -47,23 +47,11 @@ public class MimeTypeUsageTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("mimeTypeUsageTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var createMimeTypeUsageTypeDescriptionForm = CoreFormFactory.getCreateMimeTypeUsageTypeDescriptionForm();
                 
                 createMimeTypeUsageTypeDescriptionForm.setMimeTypeUsageTypeName(mimeTypeUsageTypeName);
-                createMimeTypeUsageTypeDescriptionForm.setLanguageIsoName(languageIsoName);
-                createMimeTypeUsageTypeDescriptionForm.setDescription(description);
+                createMimeTypeUsageTypeDescriptionForm.set(getAttrsMap(attrs));
                 
                 coreService.createMimeTypeUsageTypeDescription(initialDataParser.getUserVisit(), createMimeTypeUsageTypeDescriptionForm);
             } catch (Exception e) {

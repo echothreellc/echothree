@@ -47,23 +47,11 @@ public class SelectorNodeTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("selectorNodeTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var createSelectorNodeTypeDescriptionForm = SelectorFormFactory.getCreateSelectorNodeTypeDescriptionForm();
                 
                 createSelectorNodeTypeDescriptionForm.setSelectorNodeTypeName(selectorNodeTypeName);
-                createSelectorNodeTypeDescriptionForm.setLanguageIsoName(languageIsoName);
-                createSelectorNodeTypeDescriptionForm.setDescription(description);
+                createSelectorNodeTypeDescriptionForm.set(getAttrsMap(attrs));
                 
                 selectorService.createSelectorNodeTypeDescription(initialDataParser.getUserVisit(), createSelectorNodeTypeDescriptionForm);
             } catch (Exception e) {

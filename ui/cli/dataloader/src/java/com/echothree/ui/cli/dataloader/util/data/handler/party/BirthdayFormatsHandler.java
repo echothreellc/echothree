@@ -44,30 +44,14 @@ public class BirthdayFormatsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("birthdayFormat")) {
-            String birthdayFormatName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("birthdayFormatName"))
-                    birthdayFormatName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = PartyFormFactory.getCreateBirthdayFormatForm();
                 
-                commandForm.setBirthdayFormatName(birthdayFormatName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
+                commandForm.set(getAttrsMap(attrs));
                 
                 partyService.createBirthdayFormat(initialDataParser.getUserVisit(), commandForm);
                 
-                initialDataParser.pushHandler(new BirthdayFormatHandler(initialDataParser, this, birthdayFormatName));
+                initialDataParser.pushHandler(new BirthdayFormatHandler(initialDataParser, this, commandForm.getBirthdayFormatName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

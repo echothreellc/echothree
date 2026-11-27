@@ -44,46 +44,14 @@ public class ClubsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("club")) {
-            String clubName = null;
-            String subscriptionTypeName = null;
-            String clubPriceFilterName = null;
-            String currencyIsoName = null;
-            String isDefault = null;
-            String sortOrder = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("clubName"))
-                    clubName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("subscriptionTypeName"))
-                    subscriptionTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("clubPriceFilterName"))
-                    clubPriceFilterName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("currencyIsoName"))
-                    currencyIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = ClubFormFactory.getCreateClubForm();
                 
-                commandForm.setClubName(clubName);
-                commandForm.setSubscriptionTypeName(subscriptionTypeName);
-                commandForm.setClubPriceFilterName(clubPriceFilterName);
-                commandForm.setCurrencyIsoName(currencyIsoName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
-                commandForm.setDescription(description);
+                commandForm.set(getAttrsMap(attrs));
                 
                 clubService.createClub(initialDataParser.getUserVisit(), commandForm);
                 
-                initialDataParser.pushHandler(new ClubHandler(initialDataParser, this, clubName));
+                initialDataParser.pushHandler(new ClubHandler(initialDataParser, this, commandForm.getClubName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

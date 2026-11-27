@@ -50,24 +50,12 @@ public class OrderAliasTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("orderAliasTypeDescription")) {
-            String attrLanguageIsoName = null;
-            String attrDescription = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    attrLanguageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    attrDescription = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = OrderFormFactory.getCreateOrderAliasTypeDescriptionForm();
                 
                 commandForm.setOrderTypeName(orderTypeName);
                 commandForm.setOrderAliasTypeName(orderAliasTypeName);
-                commandForm.setLanguageIsoName(attrLanguageIsoName);
-                commandForm.setDescription(attrDescription);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(orderService.createOrderAliasTypeDescription(initialDataParser.getUserVisit(), commandForm));
             } catch (Exception e) {

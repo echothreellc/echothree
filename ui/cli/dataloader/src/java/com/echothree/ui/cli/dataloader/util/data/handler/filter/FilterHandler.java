@@ -51,98 +51,55 @@ public class FilterHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("filterDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = FilterFormFactory.getCreateFilterDescriptionForm();
                 
                 commandForm.setFilterKindName(filterKindName);
                 commandForm.setFilterTypeName(filterTypeName);
                 commandForm.setFilterName(filterName);
-                commandForm.setLanguageIsoName(languageIsoName);
-                commandForm.setDescription(description);
+                commandForm.set(getAttrsMap(attrs));
                 
                 filterService.createFilterDescription(initialDataParser.getUserVisit(), commandForm);
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         } else if(localName.equals("filterStep")) {
-            String filterStepName = null;
-            String filterItemSelectorName = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("filterStepName"))
-                    filterStepName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("filterItemSelectorName"))
-                    filterItemSelectorName = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = FilterFormFactory.getCreateFilterStepForm();
                 
                 commandForm.setFilterKindName(filterKindName);
                 commandForm.setFilterTypeName(filterTypeName);
                 commandForm.setFilterName(filterName);
-                commandForm.setFilterStepName(filterStepName);
-                commandForm.setFilterItemSelectorName(filterItemSelectorName);
+                commandForm.set(getAttrsMap(attrs));
                 
                 filterService.createFilterStep(initialDataParser.getUserVisit(), commandForm);
                 
-                initialDataParser.pushHandler(new FilterStepHandler(initialDataParser, this, filterKindName, filterTypeName, filterName, filterStepName));
+                initialDataParser.pushHandler(new FilterStepHandler(initialDataParser, this, filterKindName, filterTypeName,
+                        filterName, commandForm.getFilterStepName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         } else if(localName.equals("filterEntranceStep")) {
-            String filterStepName = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("filterStepName"))
-                    filterStepName = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = FilterFormFactory.getCreateFilterEntranceStepForm();
                 
                 commandForm.setFilterKindName(filterKindName);
                 commandForm.setFilterTypeName(filterTypeName);
                 commandForm.setFilterName(filterName);
-                commandForm.setFilterStepName(filterStepName);
+                commandForm.set(getAttrsMap(attrs));
                 
                 filterService.createFilterEntranceStep(initialDataParser.getUserVisit(), commandForm);
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         } else if(localName.equals("filterStepDestination")) {
-            String fromFilterStepName = null;
-            String toFilterStepName = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("fromFilterStepName"))
-                    fromFilterStepName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("toFilterStepName"))
-                    toFilterStepName = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = FilterFormFactory.getCreateFilterStepDestinationForm();
                 
                 commandForm.setFilterKindName(filterKindName);
                 commandForm.setFilterTypeName(filterTypeName);
                 commandForm.setFilterName(filterName);
-                commandForm.setFromFilterStepName(fromFilterStepName);
-                commandForm.setToFilterStepName(toFilterStepName);
+                commandForm.set(getAttrsMap(attrs));
                 
                 filterService.createFilterStepDestination(initialDataParser.getUserVisit(), commandForm);
             } catch (Exception e) {

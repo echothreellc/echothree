@@ -44,34 +44,14 @@ public class ReturnKindsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("returnKind")) {
-            String returnKindName = null;
-            String returnSequenceTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("returnKindName"))
-                    returnKindName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("returnSequenceTypeName"))
-                    returnSequenceTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = ReturnPolicyFormFactory.getCreateReturnKindForm();
                 
-                commandForm.setReturnKindName(returnKindName);
-                commandForm.setReturnSequenceTypeName(returnSequenceTypeName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(returnPolicyService.createReturnKind(initialDataParser.getUserVisit(), commandForm));
                 
-                initialDataParser.pushHandler(new ReturnKindHandler(initialDataParser, this, returnKindName));
+                initialDataParser.pushHandler(new ReturnKindHandler(initialDataParser, this, commandForm.getReturnKindName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

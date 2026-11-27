@@ -51,37 +51,10 @@ public class AssociateHandler
             throws SAXException {
         if(localName.equals("associatePartyContactMechanism")) {
             var commandForm = AssociateFormFactory.getCreateAssociatePartyContactMechanismForm();
-            String associatePartyContactMechanismName = null;
-            String contactMechanismName = null;
-            String contactMechanismAliasTypeName = null;
-            String alias = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("associatePartyContactMechanismName"))
-                    associatePartyContactMechanismName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("contactMechanismName"))
-                    contactMechanismName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("contactMechanismAliasTypeName"))
-                    contactMechanismAliasTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("alias"))
-                    alias = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
             
             commandForm.setAssociateProgramName(associateProgramName);
             commandForm.setAssociateName(associateName);
-            commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
-            commandForm.setContactMechanismName(contactMechanismName);
-            commandForm.setContactMechanismAliasTypeName(contactMechanismAliasTypeName);
-            commandForm.setAlias(alias);
-            commandForm.setIsDefault(isDefault);
-            commandForm.setSortOrder(sortOrder);
+            commandForm.set(getAttrsMap(attrs));
             
             checkCommandResult(associateService.createAssociatePartyContactMechanism(initialDataParser.getUserVisit(), commandForm));
         }

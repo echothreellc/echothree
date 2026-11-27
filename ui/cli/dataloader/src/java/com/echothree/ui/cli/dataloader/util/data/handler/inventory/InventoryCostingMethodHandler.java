@@ -48,23 +48,11 @@ public class InventoryCostingMethodHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("inventoryCostingMethodDescription")) {
-            String attrLanguageIsoName = null;
-            String attrDescription = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    attrLanguageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    attrDescription = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = InventoryFormFactory.getCreateInventoryCostingMethodDescriptionForm();
                 
                 commandForm.setInventoryCostingMethodName(inventoryCostingMethodName);
-                commandForm.setLanguageIsoName(attrLanguageIsoName);
-                commandForm.setDescription(attrDescription);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(inventoryService.createInventoryCostingMethodDescription(initialDataParser.getUserVisit(), commandForm));
             } catch (Exception e) {

@@ -45,39 +45,12 @@ public class ForumsHandler
             throws SAXException {
         if(localName.equals("forum")) {
             var form = ForumFormFactory.getCreateForumForm();
-            String forumName = null;
-            String forumTypeName = null;
-            String iconName = null;
-            String forumThreadSequenceName = null;
-            String forumMessageSequenceName = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("forumName"))
-                    forumName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("forumTypeName"))
-                    forumTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("iconName"))
-                    iconName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("forumThreadSequenceName"))
-                    forumThreadSequenceName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("forumMessageSequenceName"))
-                    forumMessageSequenceName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
             
-            form.setForumName(forumName);
-            form.setForumTypeName(forumTypeName);
-            form.setIconName(iconName);
-            form.setForumThreadSequenceName(forumThreadSequenceName);
-            form.setForumMessageSequenceName(forumMessageSequenceName);
-            form.setSortOrder(sortOrder);
+            form.set(getAttrsMap(attrs));
             
             forumService.createForum(initialDataParser.getUserVisit(), form);
             
-            initialDataParser.pushHandler(new ForumHandler(initialDataParser, this, forumName));
+            initialDataParser.pushHandler(new ForumHandler(initialDataParser, this, form.getForumName()));
         }
     }
     

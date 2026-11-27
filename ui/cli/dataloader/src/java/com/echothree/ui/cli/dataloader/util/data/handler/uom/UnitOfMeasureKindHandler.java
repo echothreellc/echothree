@@ -56,16 +56,8 @@ public class UnitOfMeasureKindHandler
 
             checkCommandResult(uomService.createUnitOfMeasureKindDescription(initialDataParser.getUserVisit(), form));
         } else if(localName.equals("unitOfMeasureType")) {
-            String unitOfMeasureTypeName = null;
-            String doCreate = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("unitOfMeasureTypeName"))
-                    unitOfMeasureTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("doCreate"))
-                    doCreate = attrs.getValue(i);
-            }
+            var unitOfMeasureTypeName = attrs.getValue("unitOfMeasureTypeName");
+            var doCreate = attrs.getValue("doCreate");
             
             if(doCreate == null || doCreate.equalsIgnoreCase("true")) {
                 var form = UomFormFactory.getCreateUnitOfMeasureTypeForm();

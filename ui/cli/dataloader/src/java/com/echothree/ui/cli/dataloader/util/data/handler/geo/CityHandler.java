@@ -56,62 +56,30 @@ public class CityHandler
             throws SAXException {
         if(localName.equals("geoCodeDescription")) {
             var commandForm = GeoFormFactory.getCreateGeoCodeDescriptionForm();
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
             
             commandForm.setGeoCodeName(cityGeoCodeName);
-            commandForm.setLanguageIsoName(languageIsoName);
-            commandForm.setDescription(description);
+            commandForm.set(getAttrsMap(attrs));
             
             geoService.createGeoCodeDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("cityCounty")) {
             var commandForm = GeoFormFactory.getAddCityToCountyForm();
-            String countyName = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("countyName"))
-                    countyName = attrs.getValue(i);
-            }
             
             commandForm.setCityGeoCodeName(cityGeoCodeName);
-            commandForm.setCountyName(countyName);
+            commandForm.set(getAttrsMap(attrs));
             
             geoService.addCityToCounty(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("cityZipCode")) {
             var commandForm = GeoFormFactory.getAddZipCodeToCityForm();
-            String zipCodeName = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("zipCodeName"))
-                    zipCodeName = attrs.getValue(i);
-            }
             
             commandForm.setCityGeoCodeName(cityGeoCodeName);
-            commandForm.setZipCodeName(zipCodeName);
+            commandForm.set(getAttrsMap(attrs));
             
             geoService.addZipCodeToCity(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("geoCodeTax")) {
             var commandForm = TaxFormFactory.getCreateGeoCodeTaxForm();
-            String taxName = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("taxName"))
-                    taxName = attrs.getValue(i);
-            }
             
             commandForm.setGeoCodeName(cityGeoCodeName);
-            commandForm.setTaxName(taxName);
+            commandForm.set(getAttrsMap(attrs));
             
             taxService.createGeoCodeTax(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("entityAttributes")) {

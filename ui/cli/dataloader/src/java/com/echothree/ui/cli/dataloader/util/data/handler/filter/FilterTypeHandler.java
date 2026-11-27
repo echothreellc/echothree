@@ -49,64 +49,29 @@ public class FilterTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("filterTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = FilterFormFactory.getCreateFilterTypeDescriptionForm();
                 
                 commandForm.setFilterKindName(filterKindName);
                 commandForm.setFilterTypeName(filterTypeName);
-                commandForm.setLanguageIsoName(languageIsoName);
-                commandForm.setDescription(description);
+                commandForm.set(getAttrsMap(attrs));
                 
                 filterService.createFilterTypeDescription(initialDataParser.getUserVisit(), commandForm);
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         } else if(localName.equals("filter")) {
-            String filterName = null;
-            String initialFilterAdjustmentName = null;
-            String filterItemSelectorName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("filterName"))
-                    filterName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("initialFilterAdjustmentName"))
-                    initialFilterAdjustmentName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("filterItemSelectorName"))
-                    filterItemSelectorName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = FilterFormFactory.getCreateFilterForm();
                 
                 commandForm.setFilterKindName(filterKindName);
                 commandForm.setFilterTypeName(filterTypeName);
-                commandForm.setFilterName(filterName);
-                commandForm.setInitialFilterAdjustmentName(initialFilterAdjustmentName);
-                commandForm.setFilterItemSelectorName(filterItemSelectorName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
+                commandForm.set(getAttrsMap(attrs));
                 
                 filterService.createFilter(initialDataParser.getUserVisit(), commandForm);
                 
-                initialDataParser.pushHandler(new FilterHandler(initialDataParser, this, filterKindName, filterTypeName, filterName));
+                initialDataParser.pushHandler(new FilterHandler(initialDataParser, this, filterKindName, filterTypeName,
+                        commandForm.getFilterName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

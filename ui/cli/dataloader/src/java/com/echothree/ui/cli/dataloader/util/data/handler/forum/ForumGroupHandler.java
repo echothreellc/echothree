@@ -48,18 +48,16 @@ public class ForumGroupHandler
             throws SAXException {
         if(localName.equals("forumGroupDescription")) {
             var commandForm = ForumFormFactory.getCreateForumGroupDescriptionForm();
-            var attrsMap = getAttrsMap(attrs);
-            
+
             commandForm.setForumGroupName(forumGroupName);
-            commandForm.set(attrsMap);
+            commandForm.set(getAttrsMap(attrs));
             
             forumService.createForumGroupDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("forumGroupForum")) {
             var commandForm = ForumFormFactory.getCreateForumGroupForumForm();
-            var attrsMap = getAttrsMap(attrs);
-            
+
             commandForm.setForumGroupName(forumGroupName);
-            commandForm.set(attrsMap);
+            commandForm.set(getAttrsMap(attrs));
             
             forumService.createForumGroupForum(initialDataParser.getUserVisit(), commandForm);
         }

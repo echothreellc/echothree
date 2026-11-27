@@ -48,23 +48,11 @@ public class InventoryAdjustmentTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("inventoryAdjustmentTypeDescription")) {
-            String attrLanguageIsoName = null;
-            String attrDescription = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    attrLanguageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    attrDescription = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = InventoryFormFactory.getCreateInventoryAdjustmentTypeDescriptionForm();
                 
                 commandForm.setInventoryAdjustmentTypeName(inventoryAdjustmentTypeName);
-                commandForm.setLanguageIsoName(attrLanguageIsoName);
-                commandForm.setDescription(attrDescription);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(inventoryService.createInventoryAdjustmentTypeDescription(initialDataParser.getUserVisit(), commandForm));
             } catch (Exception e) {

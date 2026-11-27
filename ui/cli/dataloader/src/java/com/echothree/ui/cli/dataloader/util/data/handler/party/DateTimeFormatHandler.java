@@ -47,23 +47,11 @@ public class DateTimeFormatHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("dateTimeFormatDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var createDateTimeFormatDescriptionForm = PartyFormFactory.getCreateDateTimeFormatDescriptionForm();
                 
                 createDateTimeFormatDescriptionForm.setDateTimeFormatName(dateTimeFormatName);
-                createDateTimeFormatDescriptionForm.setLanguageIsoName(languageIsoName);
-                createDateTimeFormatDescriptionForm.setDescription(description);
+                createDateTimeFormatDescriptionForm.set(getAttrsMap(attrs));
                 
                 partyService.createDateTimeFormatDescription(initialDataParser.getUserVisit(), createDateTimeFormatDescriptionForm);
             } catch (Exception e) {

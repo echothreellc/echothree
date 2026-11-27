@@ -44,30 +44,14 @@ public class ClubItemTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("clubItemType")) {
-            String clubItemTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("clubItemTypeName"))
-                    clubItemTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = ClubFormFactory.getCreateClubItemTypeForm();
                 
-                commandForm.setClubItemTypeName(clubItemTypeName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
+                commandForm.set(getAttrsMap(attrs));
                 
                 clubService.createClubItemType(initialDataParser.getUserVisit(), commandForm);
                 
-                initialDataParser.pushHandler(new ClubItemTypeHandler(initialDataParser, this, clubItemTypeName));
+                initialDataParser.pushHandler(new ClubItemTypeHandler(initialDataParser, this, commandForm.getClubItemTypeName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

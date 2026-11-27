@@ -48,54 +48,22 @@ public class ClubHandler
     throws SAXException {
         
         if(localName.equals("clubDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = ClubFormFactory.getCreateClubDescriptionForm();
                 
                 commandForm.setClubName(clubName);
-                commandForm.setLanguageIsoName(languageIsoName);
-                commandForm.setDescription(description);
+                commandForm.set(getAttrsMap(attrs));
                 
                 clubService.createClubDescription(initialDataParser.getUserVisit(), commandForm);
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         } else if(localName.equals("clubItem")) {
-            String clubItemTypeName = null;
-            String itemName = null;
-            String unitOfMeasureTypeName = null;
-            String subscriptionTime = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("clubItemTypeName"))
-                    clubItemTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("itemName"))
-                    itemName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("unitOfMeasureTypeName"))
-                    unitOfMeasureTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("subscriptionTime"))
-                    subscriptionTime = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = ClubFormFactory.getCreateClubItemForm();
                 
                 commandForm.setClubName(clubName);
-                commandForm.setClubItemTypeName(clubItemTypeName);
-                commandForm.setItemName(itemName);
-                commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
-                commandForm.setSubscriptionTime(subscriptionTime);
+                commandForm.set(getAttrsMap(attrs));
                 
                 clubService.createClubItem(initialDataParser.getUserVisit(), commandForm);
             } catch (Exception e) {

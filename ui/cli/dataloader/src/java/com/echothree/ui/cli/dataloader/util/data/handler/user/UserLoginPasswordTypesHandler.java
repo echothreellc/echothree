@@ -45,23 +45,12 @@ public class UserLoginPasswordTypesHandler
             throws SAXException {
         if(localName.equals("userLoginPasswordType")) {
             var commandForm = UserFormFactory.getCreateUserLoginPasswordTypeForm();
-            String userLoginPasswordTypeName = null;
-            String userLoginPasswordEncoderTypeName = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("userLoginPasswordTypeName"))
-                    userLoginPasswordTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("userLoginPasswordEncoderTypeName"))
-                    userLoginPasswordEncoderTypeName = attrs.getValue(i);
-            }
             
-            commandForm.setUserLoginPasswordTypeName(userLoginPasswordTypeName);
-            commandForm.setUserLoginPasswordEncoderTypeName(userLoginPasswordEncoderTypeName);
+            commandForm.set(getAttrsMap(attrs));
             
             userService.createUserLoginPasswordType(initialDataParser.getUserVisit(), commandForm);
             
-            initialDataParser.pushHandler(new UserLoginPasswordTypeHandler(initialDataParser, this, userLoginPasswordTypeName));
+            initialDataParser.pushHandler(new UserLoginPasswordTypeHandler(initialDataParser, this, commandForm.getUserLoginPasswordTypeName()));
         }
     }
     

@@ -47,23 +47,11 @@ public class EventTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("eventTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var createEventTypeDescriptionForm = CoreFormFactory.getCreateEventTypeDescriptionForm();
                 
                 createEventTypeDescriptionForm.setEventTypeName(eventTypeName);
-                createEventTypeDescriptionForm.setLanguageIsoName(languageIsoName);
-                createEventTypeDescriptionForm.setDescription(description);
+                createEventTypeDescriptionForm.set(getAttrsMap(attrs));
                 
                 coreService.createEventTypeDescription(initialDataParser.getUserVisit(), createEventTypeDescriptionForm);
             } catch (Exception e) {

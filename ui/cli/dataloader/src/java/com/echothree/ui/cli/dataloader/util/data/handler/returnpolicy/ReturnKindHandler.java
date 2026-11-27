@@ -47,124 +47,52 @@ public class ReturnKindHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("returnKindDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = ReturnPolicyFormFactory.getCreateReturnKindDescriptionForm();
                 
                 commandForm.setReturnKindName(returnKindName);
-                commandForm.setLanguageIsoName(languageIsoName);
-                commandForm.setDescription(description);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(returnPolicyService.createReturnKindDescription(initialDataParser.getUserVisit(), commandForm));
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         }else if(localName.equals("returnPolicy")) {
-            String returnPolicyName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("returnPolicyName"))
-                    returnPolicyName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = ReturnPolicyFormFactory.getCreateReturnPolicyForm();
                 
                 commandForm.setReturnKindName(returnKindName);
-                commandForm.setReturnPolicyName(returnPolicyName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(returnPolicyService.createReturnPolicy(initialDataParser.getUserVisit(), commandForm));
                 
-                initialDataParser.pushHandler(new ReturnPolicyHandler(initialDataParser, this, returnKindName, returnPolicyName));
+                initialDataParser.pushHandler(new ReturnPolicyHandler(initialDataParser, this, returnKindName, commandForm.getReturnPolicyName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         } else if(localName.equals("returnReason")) {
-            String returnReasonName = null;
-            String isDefault = null;
-            String sortOrder = null;
-            String description = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("returnReasonName"))
-                    returnReasonName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = ReturnPolicyFormFactory.getCreateReturnReasonForm();
                 
                 commandForm.setReturnKindName(returnKindName);
-                commandForm.setReturnReasonName(returnReasonName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
-                commandForm.setDescription(description);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(returnPolicyService.createReturnReason(initialDataParser.getUserVisit(), commandForm));
                 
-                initialDataParser.pushHandler(new ReturnReasonHandler(initialDataParser, this, returnKindName, returnReasonName));
+                initialDataParser.pushHandler(new ReturnReasonHandler(initialDataParser, this, returnKindName, commandForm.getReturnReasonName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         } else if(localName.equals("returnType")) {
-            String returnTypeName = null;
-            String returnSequenceName = null;
-            String isDefault = null;
-            String sortOrder = null;
-            String description = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("returnTypeName"))
-                    returnTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("returnSequenceName"))
-                    returnSequenceName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = ReturnPolicyFormFactory.getCreateReturnTypeForm();
                 
                 commandForm.setReturnKindName(returnKindName);
-                commandForm.setReturnTypeName(returnTypeName);
-                commandForm.setReturnSequenceName(returnSequenceName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
-                commandForm.setDescription(description);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(returnPolicyService.createReturnType(initialDataParser.getUserVisit(), commandForm));
                 
-                initialDataParser.pushHandler(new ReturnTypeHandler(initialDataParser, this, returnKindName, returnTypeName));
+                initialDataParser.pushHandler(new ReturnTypeHandler(initialDataParser, this, returnKindName, commandForm.getReturnTypeName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

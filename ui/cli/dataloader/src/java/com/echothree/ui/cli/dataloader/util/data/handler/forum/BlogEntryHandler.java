@@ -54,10 +54,9 @@ public class BlogEntryHandler
             throws SAXException {
         if(localName.equals("blogComment")) {
             var commandForm = ForumFormFactory.getCreateBlogCommentForm();
-            var attrsMap = getAttrsMap(attrs);
 
             commandForm.setParentForumMessageName(forumMessageName);
-            commandForm.set(attrsMap);
+            commandForm.set(getAttrsMap(attrs));
 
             var commandResult = forumService.createBlogComment(initialDataParser.getUserVisit(), commandForm);
 

@@ -44,26 +44,10 @@ public class ComponentStagesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("componentStage")) {
-            String componentStageName = null;
-            String description = null;
-            String relativeAge = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("componentStageName"))
-                    componentStageName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("relativeAge"))
-                    relativeAge = attrs.getValue(i);
-            }
-            
             try {
                 var createComponentStageForm = CoreFormFactory.getCreateComponentStageForm();
                 
-                createComponentStageForm.setComponentStageName(componentStageName);
-                createComponentStageForm.setDescription(description);
-                createComponentStageForm.setRelativeAge(relativeAge);
+                createComponentStageForm.set(getAttrsMap(attrs));
                 
                 coreService.createComponentStage(initialDataParser.getUserVisit(), createComponentStageForm);
             } catch (Exception e) {

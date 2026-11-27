@@ -44,30 +44,14 @@ public class SelectorTextSearchTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("selectorTextSearchType")) {
-            String selectorTextSearchTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("selectorTextSearchTypeName"))
-                    selectorTextSearchTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var form = SelectorFormFactory.getCreateSelectorTextSearchTypeForm();
                 
-                form.setSelectorTextSearchTypeName(selectorTextSearchTypeName);
-                form.setIsDefault(isDefault);
-                form.setSortOrder(sortOrder);
+                form.set(getAttrsMap(attrs));
                 
                 selectorService.createSelectorTextSearchType(initialDataParser.getUserVisit(), form);
                 
-                initialDataParser.pushHandler(new SelectorTextSearchTypeHandler(initialDataParser, this, selectorTextSearchTypeName));
+                initialDataParser.pushHandler(new SelectorTextSearchTypeHandler(initialDataParser, this, form.getSelectorTextSearchTypeName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

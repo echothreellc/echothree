@@ -44,22 +44,12 @@ public class RoleTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("roleType")) {
-            String roleTypeName = null;
-            String parentRoleTypeName = null;
+            var roleTypeName = attrs.getValue("roleTypeName");
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("roleTypeName"))
-                    roleTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("parentRoleTypeName"))
-                    parentRoleTypeName = attrs.getValue(i);
-            }
-            
             try {
                 var createRoleTypeForm = PartyFormFactory.getCreateRoleTypeForm();
                 
-                createRoleTypeForm.setRoleTypeName(roleTypeName);
-                createRoleTypeForm.setParentRoleTypeName(parentRoleTypeName);
+                createRoleTypeForm.set(getAttrsMap(attrs));
                 
                 partyService.createRoleType(initialDataParser.getUserVisit(), createRoleTypeForm);
             } catch (Exception e) {

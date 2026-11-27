@@ -47,54 +47,26 @@ public class WishlistTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("wishlistTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var form = WishlistFormFactory.getCreateWishlistTypeDescriptionForm();
                 
                 form.setWishlistTypeName(wishlistTypeName);
-                form.setLanguageIsoName(languageIsoName);
-                form.setDescription(description);
+                form.set(getAttrsMap(attrs));
                 
                 wishlistService.createWishlistTypeDescription(initialDataParser.getUserVisit(), form);
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         } else if(localName.equals("wishlistPriority")) {
-            String wishlistPriorityName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("wishlistPriorityName"))
-                    wishlistPriorityName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var form = WishlistFormFactory.getCreateWishlistPriorityForm();
                 
                 form.setWishlistTypeName(wishlistTypeName);
-                form.setWishlistPriorityName(wishlistPriorityName);
-                form.setIsDefault(isDefault);
-                form.setSortOrder(sortOrder);
+                form.set(getAttrsMap(attrs));
                 
                 wishlistService.createWishlistPriority(initialDataParser.getUserVisit(), form);
                 
-                initialDataParser.pushHandler(new WishlistPriorityHandler(initialDataParser, this, wishlistTypeName, wishlistPriorityName));
+                initialDataParser.pushHandler(new WishlistPriorityHandler(initialDataParser, this, wishlistTypeName, form.getWishlistPriorityName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

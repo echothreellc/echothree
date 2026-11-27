@@ -44,30 +44,14 @@ public class TermTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("termType")) {
-            String termTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("termTypeName"))
-                    termTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = TermFormFactory.getCreateTermTypeForm();
                 
-                commandForm.setTermTypeName(termTypeName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(termService.createTermType(initialDataParser.getUserVisit(), commandForm));
                 
-                initialDataParser.pushHandler(new TermTypeHandler(initialDataParser, this, termTypeName));
+                initialDataParser.pushHandler(new TermTypeHandler(initialDataParser, this, commandForm.getTermTypeName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

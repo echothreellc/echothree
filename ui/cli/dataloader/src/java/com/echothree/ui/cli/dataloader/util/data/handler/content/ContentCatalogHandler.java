@@ -51,71 +51,23 @@ public class ContentCatalogHandler
             throws SAXException {
         if(localName.equals("contentCatalogDescription")) {
             var commandForm = ContentFormFactory.getCreateContentCatalogDescriptionForm();
-            String languageIsoName = null;
-            String description = null;
-            String doUpdate = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("doUpdate"))
-                    doUpdate = attrs.getValue(i);
-            }
             
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentCatalogName(contentCatalogName);
-            commandForm.setLanguageIsoName(languageIsoName);
-            commandForm.setDescription(description);
+            commandForm.set(getAttrsMap(attrs));
             
             contentService.createContentCatalogDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("contentCategory")) {
             var commandForm = ContentFormFactory.getCreateContentCategoryForm();
-            String contentCategoryName = null;
-            String parentContentCategoryName = null;
-            String defaultOfferName = null;
-            String defaultUseName = null;
-            String defaultSourceName = null;
-            String isDefault = null;
-            String sortOrder = null;
-            String doUpdate = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("contentCategoryName"))
-                    contentCategoryName = attrs.getValue(i);
-                if(attrs.getQName(i).equals("parentContentCategoryName"))
-                    parentContentCategoryName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("defaultOfferName"))
-                    defaultOfferName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("defaultUseName"))
-                    defaultUseName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("defaultSourceName"))
-                    defaultSourceName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("doUpdate"))
-                    doUpdate = attrs.getValue(i);
-            }
             
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentCatalogName(contentCatalogName);
-            commandForm.setContentCategoryName(contentCategoryName);
-            commandForm.setParentContentCategoryName(parentContentCategoryName);
-            commandForm.setDefaultOfferName(defaultOfferName);
-            commandForm.setDefaultUseName(defaultUseName);
-            commandForm.setDefaultSourceName(defaultSourceName);
-            commandForm.setIsDefault(isDefault);
-            commandForm.setSortOrder(sortOrder);
+            commandForm.set(getAttrsMap(attrs));
             
             contentService.createContentCategory(initialDataParser.getUserVisit(), commandForm);
             
             initialDataParser.pushHandler(new ContentCategoryHandler(initialDataParser, this, contentCollectionName,
-                    contentCatalogName, contentCategoryName));
+                    contentCatalogName, commandForm.getContentCategoryName()));
         }
     }
     

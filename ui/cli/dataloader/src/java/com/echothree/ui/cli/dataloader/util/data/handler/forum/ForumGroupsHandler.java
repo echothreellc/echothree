@@ -45,27 +45,12 @@ public class ForumGroupsHandler
             throws SAXException {
         if(localName.equals("forumGroup")) {
             var form = ForumFormFactory.getCreateForumGroupForm();
-            String forumGroupName = null;
-            String iconName = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("forumGroupName"))
-                    forumGroupName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("iconName"))
-                    iconName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
             
-            form.setForumGroupName(forumGroupName);
-            form.setIconName(iconName);
-            form.setSortOrder(sortOrder);
+            form.set(getAttrsMap(attrs));
             
             forumService.createForumGroup(initialDataParser.getUserVisit(), form);
             
-            initialDataParser.pushHandler(new ForumGroupHandler(initialDataParser, this, forumGroupName));
+            initialDataParser.pushHandler(new ForumGroupHandler(initialDataParser, this, form.getForumGroupName()));
         }
     }
     

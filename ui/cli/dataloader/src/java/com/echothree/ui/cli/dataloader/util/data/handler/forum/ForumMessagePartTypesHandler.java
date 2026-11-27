@@ -44,26 +44,12 @@ public class ForumMessagePartTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("forumMessagePartType")) {
-            String forumMessagePartTypeName = null;
-            String sortOrder = null;
-            String mimeTypeUsageTypeName = null;
+            var forumMessagePartTypeName = attrs.getValue("forumMessagePartTypeName");
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("forumMessagePartTypeName"))
-                    forumMessagePartTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("mimeTypeUsageTypeName"))
-                    mimeTypeUsageTypeName = attrs.getValue(i);
-            }
-            
             try {
                 var form = ForumFormFactory.getCreateForumMessagePartTypeForm();
                 
-                form.setForumMessagePartTypeName(forumMessagePartTypeName);
-                form.setSortOrder(sortOrder);
-                form.setMimeTypeUsageTypeName(mimeTypeUsageTypeName);
+                form.set(getAttrsMap(attrs));
                 
                 forumService.createForumMessagePartType(initialDataParser.getUserVisit(), form);
             } catch (Exception e) {

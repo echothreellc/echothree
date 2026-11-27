@@ -44,30 +44,14 @@ public class PostalAddressFormatsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("postalAddressFormat")) {
-            String postalAddressFormatName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("postalAddressFormatName"))
-                    postalAddressFormatName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var form = ContactFormFactory.getCreatePostalAddressFormatForm();
                 
-                form.setPostalAddressFormatName(postalAddressFormatName);
-                form.setIsDefault(isDefault);
-                form.setSortOrder(sortOrder);
+                form.set(getAttrsMap(attrs));
                 
                 contactService.createPostalAddressFormat(initialDataParser.getUserVisit(), form);
                 
-                initialDataParser.pushHandler(new PostalAddressFormatHandler(initialDataParser, this, postalAddressFormatName));
+                initialDataParser.pushHandler(new PostalAddressFormatHandler(initialDataParser, this, form.getPostalAddressFormatName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

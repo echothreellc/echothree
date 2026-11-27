@@ -56,34 +56,16 @@ public class CountyHandler
             throws SAXException {
         if(localName.equals("geoCodeDescription")) {
             var commandForm = GeoFormFactory.getCreateGeoCodeDescriptionForm();
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
             
             commandForm.setGeoCodeName(countyGeoCodeName);
-            commandForm.setLanguageIsoName(languageIsoName);
-            commandForm.setDescription(description);
+            commandForm.set(getAttrsMap(attrs));
             
             geoService.createGeoCodeDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("geoCodeTax")) {
             var commandForm = TaxFormFactory.getCreateGeoCodeTaxForm();
-            String taxName = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("taxName"))
-                    taxName = attrs.getValue(i);
-            }
             
             commandForm.setGeoCodeName(countyGeoCodeName);
-            commandForm.setTaxName(taxName);
+            commandForm.set(getAttrsMap(attrs));
             
             taxService.createGeoCodeTax(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("entityAttributes")) {

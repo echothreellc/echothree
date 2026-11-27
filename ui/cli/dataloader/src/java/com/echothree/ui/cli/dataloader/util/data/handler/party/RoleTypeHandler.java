@@ -47,23 +47,11 @@ public class RoleTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("roleTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var createRoleTypeDescriptionForm = PartyFormFactory.getCreateRoleTypeDescriptionForm();
                 
                 createRoleTypeDescriptionForm.setRoleTypeName(roleTypeName);
-                createRoleTypeDescriptionForm.setLanguageIsoName(languageIsoName);
-                createRoleTypeDescriptionForm.setDescription(description);
+                createRoleTypeDescriptionForm.set(getAttrsMap(attrs));
                 
                 partyService.createRoleTypeDescription(initialDataParser.getUserVisit(), createRoleTypeDescriptionForm);
             } catch (Exception e) {

@@ -44,30 +44,14 @@ public class CommunicationEventPurposesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("communicationEventPurpose")) {
-            String communicationEventPurposeName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("communicationEventPurposeName"))
-                    communicationEventPurposeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var form = CommunicationFormFactory.getCreateCommunicationEventPurposeForm();
                 
-                form.setCommunicationEventPurposeName(communicationEventPurposeName);
-                form.setIsDefault(isDefault);
-                form.setSortOrder(sortOrder);
+                form.set(getAttrsMap(attrs));
                 
                 communicationService.createCommunicationEventPurpose(initialDataParser.getUserVisit(), form);
                 
-                initialDataParser.pushHandler(new CommunicationEventPurposeHandler(initialDataParser, this, communicationEventPurposeName));
+                initialDataParser.pushHandler(new CommunicationEventPurposeHandler(initialDataParser, this, form.getCommunicationEventPurposeName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

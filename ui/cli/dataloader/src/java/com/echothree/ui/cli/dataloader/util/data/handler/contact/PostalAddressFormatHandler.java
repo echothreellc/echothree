@@ -47,67 +47,27 @@ public class PostalAddressFormatHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("postalAddressFormatDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var form = ContactFormFactory.getCreatePostalAddressFormatDescriptionForm();
                 
                 form.setPostalAddressFormatName(postalAddressFormatName);
-                form.setLanguageIsoName(languageIsoName);
-                form.setDescription(description);
+                form.set(getAttrsMap(attrs));
                 
                 contactService.createPostalAddressFormatDescription(initialDataParser.getUserVisit(), form);
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         } else if(localName.equals("postalAddressLine")) {
-            String postalAddressLineSortOrder = null;
-            String prefix = null;
-            String alwaysIncludePrefix = null;
-            String suffix = null;
-            String alwaysIncludeSuffix = null;
-            String collapseIfEmpty = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("postalAddressLineSortOrder"))
-                    postalAddressLineSortOrder = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("prefix"))
-                    prefix = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("alwaysIncludePrefix"))
-                    alwaysIncludePrefix = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("suffix"))
-                    suffix = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("alwaysIncludeSuffix"))
-                    alwaysIncludeSuffix = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("collapseIfEmpty"))
-                    collapseIfEmpty = attrs.getValue(i);
-            }
-            
             try {
                 var form = ContactFormFactory.getCreatePostalAddressLineForm();
                 
                 form.setPostalAddressFormatName(postalAddressFormatName);
-                form.setPostalAddressLineSortOrder(postalAddressLineSortOrder);
-                form.setPrefix(prefix);
-                form.setAlwaysIncludePrefix(alwaysIncludePrefix);
-                form.setSuffix(suffix);
-                form.setAlwaysIncludeSuffix(alwaysIncludeSuffix);
-                form.setCollapseIfEmpty(collapseIfEmpty);
+                form.set(getAttrsMap(attrs));
                 
                 contactService.createPostalAddressLine(initialDataParser.getUserVisit(), form);
                 
                 initialDataParser.pushHandler(new PostalAddressLineHandler(initialDataParser, this, postalAddressFormatName,
-                        postalAddressLineSortOrder));
+                        form.getPostalAddressLineSortOrder()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

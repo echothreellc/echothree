@@ -44,30 +44,14 @@ public class TagScopesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("tagScope")) {
-            String tagScopeName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("tagScopeName"))
-                    tagScopeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = TagFormFactory.getCreateTagScopeForm();
                 
-                commandForm.setTagScopeName(tagScopeName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
+                commandForm.set(getAttrsMap(attrs));
                 
                 tagService.createTagScope(initialDataParser.getUserVisit(), commandForm);
                 
-                initialDataParser.pushHandler(new TagScopeHandler(initialDataParser, this, tagScopeName));
+                initialDataParser.pushHandler(new TagScopeHandler(initialDataParser, this, commandForm.getTagScopeName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

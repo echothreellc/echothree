@@ -49,32 +49,12 @@ public class ComponentHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("componentVersion")) {
-            String majorRevision = null;
-            String minorRevision = null;
-            String componentStageName = null;
-            String buildNumber = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("majorRevision"))
-                    majorRevision = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("minorRevision"))
-                    minorRevision = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("componentStageName"))
-                    componentStageName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("buildNumber"))
-                    buildNumber = attrs.getValue(i);
-            }
-            
             try {
                 var createComponentVersionForm = CoreFormFactory.getCreateComponentVersionForm();
                 
                 createComponentVersionForm.setComponentVendorName(componentVendorName);
                 createComponentVersionForm.setComponentName(componentName);
-                createComponentVersionForm.setMajorRevision(majorRevision);
-                createComponentVersionForm.setMinorRevision(minorRevision);
-                createComponentVersionForm.setComponentStageName(componentStageName);
-                createComponentVersionForm.setBuildNumber(buildNumber);
+                createComponentVersionForm.set(getAttrsMap(attrs));
                 
                 coreService.createComponentVersion(initialDataParser.getUserVisit(), createComponentVersionForm);
             } catch (Exception e) {

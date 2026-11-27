@@ -44,34 +44,14 @@ public class ItemCategoriesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("itemCategory")) {
-            String itemCategoryName = null;
-            String parentItemCategoryName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("itemCategoryName"))
-                    itemCategoryName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("parentItemCategoryName"))
-                    parentItemCategoryName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var createItemCategoryForm = ItemFormFactory.getCreateItemCategoryForm();
                 
-                createItemCategoryForm.setItemCategoryName(itemCategoryName);
-                createItemCategoryForm.setParentItemCategoryName(parentItemCategoryName);
-                createItemCategoryForm.setIsDefault(isDefault);
-                createItemCategoryForm.setSortOrder(sortOrder);
+                createItemCategoryForm.set(getAttrsMap(attrs));
                 
                 itemService.createItemCategory(initialDataParser.getUserVisit(), createItemCategoryForm);
                 
-                initialDataParser.pushHandler(new ItemCategoryHandler(initialDataParser, this, itemCategoryName));
+                initialDataParser.pushHandler(new ItemCategoryHandler(initialDataParser, this, createItemCategoryForm.getItemCategoryName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

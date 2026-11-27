@@ -50,92 +50,36 @@ public class InventoryLocationGroupHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("inventoryLocationGroupDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var form = InventoryFormFactory.getCreateInventoryLocationGroupDescriptionForm();
                 
                 form.setWarehouseName(warehouseName);
                 form.setInventoryLocationGroupName(inventoryLocationGroupName);
-                form.setLanguageIsoName(languageIsoName);
-                form.setDescription(description);
+                form.set(getAttrsMap(attrs));
                 
                 inventoryService.createInventoryLocationGroupDescription(initialDataParser.getUserVisit(), form);
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         } else if(localName.equals("inventoryLocationGroupVolume")) {
-            String heightUnitOfMeasureTypeName = null;
-            String height  = null;
-            String widthUnitOfMeasureTypeName = null;
-            String width = null;
-            String depthUnitOfMeasureTypeName = null;
-            String depth = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("heightUnitOfMeasureTypeName"))
-                    heightUnitOfMeasureTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("height"))
-                    height = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("widthUnitOfMeasureTypeName"))
-                    widthUnitOfMeasureTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("width"))
-                    width = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("depthUnitOfMeasureTypeName"))
-                    depthUnitOfMeasureTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("depth"))
-                    depth = attrs.getValue(i);
-            }
-            
             try {
                 var form = InventoryFormFactory.getCreateInventoryLocationGroupVolumeForm();
                 
                 form.setWarehouseName(warehouseName);
                 form.setInventoryLocationGroupName(inventoryLocationGroupName);
-                form.setHeightUnitOfMeasureTypeName(heightUnitOfMeasureTypeName);
-                form.setHeight(height);
-                form.setWidthUnitOfMeasureTypeName(widthUnitOfMeasureTypeName);
-                form.setWidth(width);
-                form.setDepthUnitOfMeasureTypeName(depthUnitOfMeasureTypeName);
-                form.setDepth(depth);
+                form.set(getAttrsMap(attrs));
                 
                 inventoryService.createInventoryLocationGroupVolume(initialDataParser.getUserVisit(), form);
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         } else if(localName.equals("inventoryLocationGroupCapacity")) {
-            String unitOfMeasureKindName = null;
-            String unitOfMeasureTypeName = null;
-            String capacity  = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("unitOfMeasureKindName"))
-                    unitOfMeasureKindName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("unitOfMeasureTypeName"))
-                    unitOfMeasureTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("capacity"))
-                    capacity = attrs.getValue(i);
-            }
-            
             try {
                 var form = InventoryFormFactory.getCreateInventoryLocationGroupCapacityForm();
                 
                 form.setWarehouseName(warehouseName);
                 form.setInventoryLocationGroupName(inventoryLocationGroupName);
-                form.setUnitOfMeasureKindName(unitOfMeasureKindName);
-                form.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
-                form.setCapacity(capacity);
+                form.set(getAttrsMap(attrs));
                 
                 inventoryService.createInventoryLocationGroupCapacity(initialDataParser.getUserVisit(), form);
             } catch (Exception e) {

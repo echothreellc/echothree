@@ -49,80 +49,36 @@ public class ReturnTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("returnTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = ReturnPolicyFormFactory.getCreateReturnTypeDescriptionForm();
                 
                 commandForm.setReturnKindName(returnKindName);
                 commandForm.setReturnTypeName(returnTypeName);
-                commandForm.setLanguageIsoName(languageIsoName);
-                commandForm.setDescription(description);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(returnPolicyService.createReturnTypeDescription(initialDataParser.getUserVisit(), commandForm));
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         } else if(localName.equals("returnReasonType")) {
-            String returnReasonName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("returnReasonName"))
-                    returnReasonName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = ReturnPolicyFormFactory.getCreateReturnReasonTypeForm();
                 
                 commandForm.setReturnKindName(returnKindName);
-                commandForm.setReturnReasonName(returnReasonName);
                 commandForm.setReturnTypeName(returnTypeName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(returnPolicyService.createReturnReasonType(initialDataParser.getUserVisit(), commandForm));
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         } else if(localName.equals("returnTypeShippingMethod")) {
-            String shippingMethodName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("shippingMethodName"))
-                    shippingMethodName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = ReturnPolicyFormFactory.getCreateReturnTypeShippingMethodForm();
                 
                 commandForm.setReturnKindName(returnKindName);
                 commandForm.setReturnTypeName(returnTypeName);
-                commandForm.setShippingMethodName(shippingMethodName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(returnPolicyService.createReturnTypeShippingMethod(initialDataParser.getUserVisit(), commandForm));
             } catch (Exception e) {

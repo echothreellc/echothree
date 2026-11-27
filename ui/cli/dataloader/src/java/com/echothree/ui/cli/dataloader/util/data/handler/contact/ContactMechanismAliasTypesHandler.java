@@ -44,26 +44,12 @@ public class ContactMechanismAliasTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("contactMechanismAliasType")) {
-            String contactMechanismAliasTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var contactMechanismAliasTypeName = attrs.getValue("contactMechanismAliasTypeName");
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("contactMechanismAliasTypeName"))
-                    contactMechanismAliasTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var form = ContactFormFactory.getCreateContactMechanismAliasTypeForm();
                 
-                form.setContactMechanismAliasTypeName(contactMechanismAliasTypeName);
-                form.setIsDefault(isDefault);
-                form.setSortOrder(sortOrder);
+                form.set(getAttrsMap(attrs));
                 
                 contactService.createContactMechanismAliasType(initialDataParser.getUserVisit(), form);
             } catch (Exception e) {

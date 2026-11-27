@@ -44,30 +44,14 @@ public class ItemUseTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("itemUseType")) {
-            String itemUseTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("itemUseTypeName"))
-                    itemUseTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = ItemFormFactory.getCreateItemUseTypeForm();
                 
-                commandForm.setItemUseTypeName(itemUseTypeName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
+                commandForm.set(getAttrsMap(attrs));
                 
                 itemService.createItemUseType(initialDataParser.getUserVisit(), commandForm);
                 
-                initialDataParser.pushHandler(new ItemUseTypeHandler(initialDataParser, this, itemUseTypeName));
+                initialDataParser.pushHandler(new ItemUseTypeHandler(initialDataParser, this, commandForm.getItemUseTypeName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

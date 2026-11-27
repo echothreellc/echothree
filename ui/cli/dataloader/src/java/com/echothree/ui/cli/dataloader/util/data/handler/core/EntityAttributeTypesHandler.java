@@ -44,22 +44,15 @@ public class EntityAttributeTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("entityAttributeType")) {
-            String entityAttributeTypeName = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("entityAttributeTypeName"))
-                    entityAttributeTypeName = attrs.getValue(i);
-            }
-            
             try {
                 var createEntityAttributeTypeForm = CoreFormFactory.getCreateEntityAttributeTypeForm();
                 
-                createEntityAttributeTypeForm.setEntityAttributeTypeName(entityAttributeTypeName);
+                createEntityAttributeTypeForm.set(getAttrsMap(attrs));
                 
                 coreService.createEntityAttributeType(initialDataParser.getUserVisit(), createEntityAttributeTypeForm);
                 
-                initialDataParser.pushHandler(new EntityAttributeTypeHandler(initialDataParser, this, entityAttributeTypeName));
+                initialDataParser.pushHandler(new EntityAttributeTypeHandler(initialDataParser, this,
+                        createEntityAttributeTypeForm.getEntityAttributeTypeName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

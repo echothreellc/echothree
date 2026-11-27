@@ -47,46 +47,22 @@ public class ShippingMethodHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("shippingMethodDescription")) {
-            String attrLanguageIsoName = null;
-            String attrDescription = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    attrLanguageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    attrDescription = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = ShippingFormFactory.getCreateShippingMethodDescriptionForm();
                 
                 commandForm.setShippingMethodName(shippingMethodName);
-                commandForm.setLanguageIsoName(attrLanguageIsoName);
-                commandForm.setDescription(attrDescription);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(shippingService.createShippingMethodDescription(initialDataParser.getUserVisit(), commandForm));
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         } else if(localName.equals("shippingMethodCarrierService")) {
-            String carrierName = null;
-            String carrierServiceName = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("carrierName"))
-                    carrierName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("carrierServiceName"))
-                    carrierServiceName = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = ShippingFormFactory.getCreateShippingMethodCarrierServiceForm();
                 
                 commandForm.setShippingMethodName(shippingMethodName);
-                commandForm.setCarrierName(carrierName);
-                commandForm.setCarrierServiceName(carrierServiceName);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(shippingService.createShippingMethodCarrierService(initialDataParser.getUserVisit(), commandForm));
             } catch (Exception e) {

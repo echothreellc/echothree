@@ -50,50 +50,44 @@ public class ForumHandler
             throws SAXException {
         if(localName.equals("forumDescription")) {
             var commandForm = ForumFormFactory.getCreateForumDescriptionForm();
-            var attrsMap = getAttrsMap(attrs);
 
             commandForm.setForumName(forumName);
-            commandForm.set(attrsMap);
+            commandForm.set(getAttrsMap(attrs));
 
             forumService.createForumDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("forumGroupForum")) {
             var commandForm = ForumFormFactory.getCreateForumGroupForumForm();
-            var attrsMap = getAttrsMap(attrs);
 
             commandForm.setForumName(forumName);
-            commandForm.set(attrsMap);
+            commandForm.set(getAttrsMap(attrs));
 
             forumService.createForumGroupForum(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("forumMimeType")) {
             var commandForm = ForumFormFactory.getCreateForumMimeTypeForm();
-            var attrsMap = getAttrsMap(attrs);
 
             commandForm.setForumName(forumName);
-            commandForm.set(attrsMap);
+            commandForm.set(getAttrsMap(attrs));
 
             forumService.createForumMimeType(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("forumPartyRole")) {
             var commandForm = ForumFormFactory.getCreateForumPartyRoleForm();
-            var attrsMap = getAttrsMap(attrs);
 
             commandForm.setForumName(forumName);
-            commandForm.set(attrsMap);
+            commandForm.set(getAttrsMap(attrs));
 
             forumService.createForumPartyRole(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("forumPartyTypeRole")) {
             var commandForm = ForumFormFactory.getCreateForumPartyTypeRoleForm();
-            var attrsMap = getAttrsMap(attrs);
 
             commandForm.setForumName(forumName);
-            commandForm.set(attrsMap);
+            commandForm.set(getAttrsMap(attrs));
 
             forumService.createForumPartyTypeRole(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("blogEntry")) {
             var commandForm = ForumFormFactory.getCreateBlogEntryForm();
-            var attrsMap = getAttrsMap(attrs);
 
             commandForm.setForumName(forumName);
-            commandForm.set(attrsMap);
+            commandForm.set(getAttrsMap(attrs));
 
             var commandResult = forumService.createBlogEntry(initialDataParser.getUserVisit(), commandForm);
 

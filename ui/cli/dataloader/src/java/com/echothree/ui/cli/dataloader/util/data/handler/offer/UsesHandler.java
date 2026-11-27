@@ -44,34 +44,14 @@ public class UsesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("use")) {
-            String useName = null;
-            String useTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("useName"))
-                    useName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("useTypeName"))
-                    useTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var form = OfferFormFactory.getCreateUseForm();
                 
-                form.setUseName(useName);
-                form.setUseTypeName(useTypeName);
-                form.setIsDefault(isDefault);
-                form.setSortOrder(sortOrder);
+                form.set(getAttrsMap(attrs));
                 
                 offerService.createUse(initialDataParser.getUserVisit(), form);
                 
-                initialDataParser.pushHandler(new UseHandler(initialDataParser, this, useName));
+                initialDataParser.pushHandler(new UseHandler(initialDataParser, this, form.getUseName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

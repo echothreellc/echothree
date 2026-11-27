@@ -44,30 +44,14 @@ public class ItemPriceTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("itemPriceType")) {
-            String itemPriceTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("itemPriceTypeName"))
-                    itemPriceTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var createItemPriceTypeForm = ItemFormFactory.getCreateItemPriceTypeForm();
                 
-                createItemPriceTypeForm.setItemPriceTypeName(itemPriceTypeName);
-                createItemPriceTypeForm.setIsDefault(isDefault);
-                createItemPriceTypeForm.setSortOrder(sortOrder);
+                createItemPriceTypeForm.set(getAttrsMap(attrs));
                 
                 itemService.createItemPriceType(initialDataParser.getUserVisit(), createItemPriceTypeForm);
                 
-                initialDataParser.pushHandler(new ItemPriceTypeHandler(initialDataParser, this, itemPriceTypeName));
+                initialDataParser.pushHandler(new ItemPriceTypeHandler(initialDataParser, this, createItemPriceTypeForm.getItemPriceTypeName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

@@ -44,22 +44,15 @@ public class ContentPageAreaTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("contentPageAreaType")) {
-            String contentPageAreaTypeName = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("contentPageAreaTypeName"))
-                    contentPageAreaTypeName = attrs.getValue(i);
-            }
-            
             try {
                 var createContentPageAreaTypeForm = ContentFormFactory.getCreateContentPageAreaTypeForm();
                 
-                createContentPageAreaTypeForm.setContentPageAreaTypeName(contentPageAreaTypeName);
+                createContentPageAreaTypeForm.set(getAttrsMap(attrs));
                 
                 contentService.createContentPageAreaType(initialDataParser.getUserVisit(), createContentPageAreaTypeForm);
                 
-                initialDataParser.pushHandler(new ContentPageAreaTypeHandler(initialDataParser, this, contentPageAreaTypeName));
+                initialDataParser.pushHandler(new ContentPageAreaTypeHandler(initialDataParser, this,
+                        createContentPageAreaTypeForm.getContentPageAreaTypeName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

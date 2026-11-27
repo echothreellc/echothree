@@ -44,30 +44,14 @@ public class ShippingMethodsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("shippingMethod")) {
-            String shippingMethodName = null;
-            String itemSelectorName = null;
-            String sortOrder = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("shippingMethodName"))
-                    shippingMethodName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("itemSelectorName"))
-                    itemSelectorName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = ShippingFormFactory.getCreateShippingMethodForm();
                 
-                commandForm.setShippingMethodName(shippingMethodName);
-                commandForm.setItemSelectorName(itemSelectorName);
-                commandForm.setSortOrder(sortOrder);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(shippingService.createShippingMethod(initialDataParser.getUserVisit(), commandForm));
                 
-                initialDataParser.pushHandler(new ShippingMethodHandler(initialDataParser, this, shippingMethodName));
+                initialDataParser.pushHandler(new ShippingMethodHandler(initialDataParser, this, commandForm.getShippingMethodName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

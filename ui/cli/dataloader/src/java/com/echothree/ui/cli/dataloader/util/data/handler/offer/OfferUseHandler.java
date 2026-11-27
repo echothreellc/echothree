@@ -49,28 +49,12 @@ public class OfferUseHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("source")) {
-            String sourceName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("sourceName"))
-                    sourceName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var form = OfferFormFactory.getCreateSourceForm();
                 
                 form.setOfferName(offerName);
                 form.setUseName(useName);
-                form.setSourceName(sourceName);
-                form.setIsDefault(isDefault);
-                form.setSortOrder(sortOrder);
+                form.set(getAttrsMap(attrs));
                 
                 offerService.createSource(initialDataParser.getUserVisit(), form);
             } catch (Exception e) {

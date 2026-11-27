@@ -49,52 +49,24 @@ public class ReturnReasonHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("returnReasonDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = ReturnPolicyFormFactory.getCreateReturnReasonDescriptionForm();
                 
                 commandForm.setReturnKindName(returnKindName);
                 commandForm.setReturnReasonName(returnReasonName);
-                commandForm.setLanguageIsoName(languageIsoName);
-                commandForm.setDescription(description);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(returnPolicyService.createReturnReasonDescription(initialDataParser.getUserVisit(), commandForm));
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         } else if(localName.equals("returnPolicyReason")) {
-            String returnPolicyName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("returnPolicyName"))
-                    returnPolicyName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = ReturnPolicyFormFactory.getCreateReturnPolicyReasonForm();
                 
                 commandForm.setReturnKindName(returnKindName);
-                commandForm.setReturnPolicyName(returnPolicyName);
                 commandForm.setReturnReasonName(returnReasonName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(returnPolicyService.createReturnPolicyReason(initialDataParser.getUserVisit(), commandForm));
             } catch (Exception e) {

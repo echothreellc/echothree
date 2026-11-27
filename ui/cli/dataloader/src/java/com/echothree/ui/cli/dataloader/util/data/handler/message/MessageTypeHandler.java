@@ -21,6 +21,8 @@ import com.echothree.control.user.message.common.MessageService;
 import com.echothree.control.user.message.common.form.MessageFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
+import java.util.Map;
+import java.util.Set;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -32,15 +34,9 @@ public class MessageTypeHandler
     String entityTypeName;
     String messageTypeName;
     
-    String messageName = null;
-    String includeByDefault = null;
-    String isDefault = null;
-    String sortOrder = null;
+    private Map<String, Object> messageAttrs;
     boolean inMessage = false;
-    String mimeTypeName = null;
-    String stringMessage = null;
     char []clobMessage = null;
-    String description = null;
     
     /** Creates a new instance of MessageTypeHandler */
     public MessageTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String componentVendorName,
@@ -62,46 +58,21 @@ public class MessageTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("messageTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = MessageFormFactory.getCreateMessageTypeDescriptionForm();
                 
                 commandForm.setComponentVendorName(componentVendorName);
                 commandForm.setEntityTypeName(entityTypeName);
                 commandForm.setMessageTypeName(messageTypeName);
-                commandForm.setLanguageIsoName(languageIsoName);
-                commandForm.setDescription(description);
+                commandForm.set(getAttrsMap(attrs));
                 
                 messageService.createMessageTypeDescription(initialDataParser.getUserVisit(), commandForm);
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         } else if(localName.equals("message")) {
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("messageName"))
-                    messageName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("includeByDefault"))
-                    includeByDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("mimeTypeName"))
-                    mimeTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("stringMessage"))
-                    stringMessage = attrs.getValue(i);
-            }
+            messageAttrs = getAttrsMap(attrs);
+            messageAttrs.keySet().removeAll(Set.of("ComponentVendorName", "EntityTypeName", "MessageTypeName", "ClobMessage", "Description"));
             
             inMessage = true;
         }
@@ -130,26 +101,14 @@ public class MessageTypeHandler
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setMessageTypeName(messageTypeName);
-            commandForm.setMessageName(messageName);
-            commandForm.setIncludeByDefault(includeByDefault);
-            commandForm.setIsDefault(isDefault);
-            commandForm.setSortOrder(sortOrder);
-            commandForm.setMimeTypeName(mimeTypeName);
             commandForm.setClobMessage(clobMessage == null? null: new String(clobMessage));
-            commandForm.setStringMessage(stringMessage);
-            commandForm.setDescription(description);
+            commandForm.set(messageAttrs);
             
             messageService.createMessage(initialDataParser.getUserVisit(), commandForm);
             
             inMessage = false;
-            messageName = null;
-            includeByDefault = null;
-            isDefault = null;
-            sortOrder = null;
-            mimeTypeName = null;
+            messageAttrs = null;
             clobMessage = null;
-            stringMessage = null;
-            description = null;
         } else if(localName.equals("messageType")) {
             initialDataParser.popHandler();
         }

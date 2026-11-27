@@ -49,24 +49,12 @@ public class PicklistAliasTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("picklistAliasTypeDescription")) {
-            String attrLanguageIsoName = null;
-            String attrDescription = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    attrLanguageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    attrDescription = attrs.getValue(i);
-            }
-            
             try {
                 var createPicklistAliasTypeDescriptionForm = PicklistFormFactory.getCreatePicklistAliasTypeDescriptionForm();
                 
                 createPicklistAliasTypeDescriptionForm.setPicklistTypeName(picklistTypeName);
                 createPicklistAliasTypeDescriptionForm.setPicklistAliasTypeName(picklistAliasTypeName);
-                createPicklistAliasTypeDescriptionForm.setLanguageIsoName(attrLanguageIsoName);
-                createPicklistAliasTypeDescriptionForm.setDescription(attrDescription);
+                createPicklistAliasTypeDescriptionForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(picklistService.createPicklistAliasTypeDescription(initialDataParser.getUserVisit(), createPicklistAliasTypeDescriptionForm));
             } catch (Exception e) {

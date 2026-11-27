@@ -44,26 +44,12 @@ public class IconUsageTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("iconUsageType")) {
-            String iconUsageTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var iconUsageTypeName = attrs.getValue("iconUsageTypeName");
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("iconUsageTypeName"))
-                    iconUsageTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var form = IconFormFactory.getCreateIconUsageTypeForm();
                 
-                form.setIconUsageTypeName(iconUsageTypeName);
-                form.setIsDefault(isDefault);
-                form.setSortOrder(sortOrder);
+                form.set(getAttrsMap(attrs));
                 
                 iconService.createIconUsageType(initialDataParser.getUserVisit(), form);
             } catch (Exception e) {

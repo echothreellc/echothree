@@ -39,6 +39,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
+import java.util.Set;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -53,11 +55,7 @@ public class ItemHandler
     String entityRef;
     
     boolean inItemDescription = false;
-    String itemDescriptionTypeName = null;
-    String languageIsoName = null;
-    String mimeTypeName = null;
-    String itemImageTypeName = null;
-    String stringDescription = null;
+    private Map<String, Object> itemDescriptionAttrs;
     char []clobDescription = null;
     String path = null;
     
@@ -89,23 +87,14 @@ public class ItemHandler
             
             itemService.createItemAlias(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("itemDescription")) {
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("itemDescriptionTypeName")) {
-                    itemDescriptionTypeName = attrs.getValue(i);
-                } else if(attrs.getQName(i).equals("languageIsoName")) {
-                    languageIsoName = attrs.getValue(i);
-                } else if(attrs.getQName(i).equals("mimeTypeName")) {
-                    mimeTypeName = attrs.getValue(i);
-                } else if(attrs.getQName(i).equals("itemImageTypeName")) {
-                    itemImageTypeName = attrs.getValue(i);
-                } else if(attrs.getQName(i).equals("stringDescription")) {
-                    stringDescription = attrs.getValue(i);
-                } else if(attrs.getQName(i).equals("path")) {
-                    path = attrs.getValue(i);
-                }
+            itemDescriptionAttrs = getAttrsMap(attrs);
+            itemDescriptionAttrs.keySet().removeAll(Set.of("ItemName", "ClobDescription", "BlobDescription"));
+
+            var itemDescriptionPath = (String)itemDescriptionAttrs.remove("Path");
+            if(itemDescriptionPath != null) {
+                path = itemDescriptionPath;
             }
-            
+
             inItemDescription = true;
         } else if(localName.equals("itemUnitOfMeasureType")) {
             var commandForm = ItemFormFactory.getCreateItemUnitOfMeasureTypeForm();
@@ -228,6 +217,12 @@ public class ItemHandler
     public void endElement(String namespaceURI, String localName, String qName)
             throws SAXException {
         if(localName.equals("itemDescription")) {
+            var itemDescriptionTypeName = (String)itemDescriptionAttrs.get("ItemDescriptionTypeName");
+            var languageIsoName = (String)itemDescriptionAttrs.get("LanguageIsoName");
+            var mimeTypeName = (String)itemDescriptionAttrs.get("MimeTypeName");
+            var itemImageTypeName = (String)itemDescriptionAttrs.get("ItemImageTypeName");
+            var stringDescription = (String)itemDescriptionAttrs.get("StringDescription");
+
             var spec = ItemSpecFactory.getItemDescriptionSpec();
             var editForm = ItemFormFactory.getEditItemDescriptionForm();
 
@@ -245,12 +240,8 @@ public class ItemHandler
                     var createForm = ItemFormFactory.getCreateItemDescriptionForm();
 
                     createForm.setItemName(itemName);
-                    createForm.setItemDescriptionTypeName(itemDescriptionTypeName);
-                    createForm.setLanguageIsoName(languageIsoName);
-                    createForm.setMimeTypeName(mimeTypeName);
-                    createForm.setItemImageTypeName(itemImageTypeName);
                     createForm.setClobDescription(clobDescription == null ? null : new String(clobDescription));
-                    createForm.setStringDescription(stringDescription);
+                    createForm.set(itemDescriptionAttrs);
 
                     if(path != null) {
                         var file = new File(path);
@@ -391,11 +382,7 @@ public class ItemHandler
             }
             
             inItemDescription = false;
-            itemDescriptionTypeName = null;
-            languageIsoName = null;
-            mimeTypeName = null;
-            itemImageTypeName = null;
-            stringDescription = null;
+            itemDescriptionAttrs = null;
             clobDescription = null;
         } else if(localName.equals("item")) {
             initialDataParser.popHandler();

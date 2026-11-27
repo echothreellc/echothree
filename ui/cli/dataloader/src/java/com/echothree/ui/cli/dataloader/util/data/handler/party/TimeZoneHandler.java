@@ -47,23 +47,11 @@ public class TimeZoneHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("timeZoneDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var createTimeZoneDescriptionForm = PartyFormFactory.getCreateTimeZoneDescriptionForm();
                 
                 createTimeZoneDescriptionForm.setJavaTimeZoneName(javaTimeZoneName);
-                createTimeZoneDescriptionForm.setLanguageIsoName(languageIsoName);
-                createTimeZoneDescriptionForm.setDescription(description);
+                createTimeZoneDescriptionForm.set(getAttrsMap(attrs));
                 
                 partyService.createTimeZoneDescription(initialDataParser.getUserVisit(), createTimeZoneDescriptionForm);
             } catch (Exception e) {

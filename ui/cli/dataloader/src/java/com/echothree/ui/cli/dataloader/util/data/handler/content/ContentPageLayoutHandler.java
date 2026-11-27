@@ -47,54 +47,27 @@ public class ContentPageLayoutHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("contentPageLayoutDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var createContentPageLayoutDescriptionForm = ContentFormFactory.getCreateContentPageLayoutDescriptionForm();
                 
                 createContentPageLayoutDescriptionForm.setContentPageLayoutName(contentPageLayoutName);
-                createContentPageLayoutDescriptionForm.setLanguageIsoName(languageIsoName);
-                createContentPageLayoutDescriptionForm.setDescription(description);
+                createContentPageLayoutDescriptionForm.set(getAttrsMap(attrs));
                 
                 contentService.createContentPageLayoutDescription(initialDataParser.getUserVisit(), createContentPageLayoutDescriptionForm);
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         } else if(localName.equals("contentPageLayoutArea")) {
-            String contentPageAreaTypeName = null;
-            String showDescriptionField = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("contentPageAreaTypeName"))
-                    contentPageAreaTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("showDescriptionField"))
-                    showDescriptionField = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var createContentPageLayoutAreaForm = ContentFormFactory.getCreateContentPageLayoutAreaForm();
                 
                 createContentPageLayoutAreaForm.setContentPageLayoutName(contentPageLayoutName);
-                createContentPageLayoutAreaForm.setContentPageAreaTypeName(contentPageAreaTypeName);
-                createContentPageLayoutAreaForm.setShowDescriptionField(showDescriptionField);
-                createContentPageLayoutAreaForm.setSortOrder(sortOrder);
+                createContentPageLayoutAreaForm.set(getAttrsMap(attrs));
                 
                 contentService.createContentPageLayoutArea(initialDataParser.getUserVisit(), createContentPageLayoutAreaForm);
                 
-                initialDataParser.pushHandler(new ContentPageLayoutAreaHandler(initialDataParser, this, contentPageLayoutName, sortOrder));
+                initialDataParser.pushHandler(new ContentPageLayoutAreaHandler(initialDataParser, this, contentPageLayoutName,
+                        createContentPageLayoutAreaForm.getSortOrder()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

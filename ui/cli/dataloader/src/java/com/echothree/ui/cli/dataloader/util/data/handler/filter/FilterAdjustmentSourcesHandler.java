@@ -44,34 +44,15 @@ public class FilterAdjustmentSourcesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("filterAdjustmentSource")) {
-            String filterAdjustmentSourceName = null;
-            String allowedForInitialAmount = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("filterAdjustmentSourceName"))
-                    filterAdjustmentSourceName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("allowedForInitialAmount"))
-                    allowedForInitialAmount = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = FilterFormFactory.getCreateFilterAdjustmentSourceForm();
                 
-                commandForm.setFilterAdjustmentSourceName(filterAdjustmentSourceName);
-                commandForm.setAllowedForInitialAmount(allowedForInitialAmount);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
+                commandForm.set(getAttrsMap(attrs));
                 
                 filterService.createFilterAdjustmentSource(initialDataParser.getUserVisit(), commandForm);
                 
-                initialDataParser.pushHandler(new FilterAdjustmentSourceHandler(initialDataParser, this, filterAdjustmentSourceName));
+                initialDataParser.pushHandler(new FilterAdjustmentSourceHandler(initialDataParser, this,
+                        commandForm.getFilterAdjustmentSourceName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

@@ -44,58 +44,14 @@ public class TermsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("term")) {
-            String termName = null;
-            String termTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
-            String netDueDays = null;
-            String discountPercentage = null;
-            String discountDays = null;
-            String netDueDayOfMonth = null;
-            String dueNextMonthDays = null;
-            String discountBeforeDayOfMonth = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("termName"))
-                    termName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("termTypeName"))
-                    termTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("netDueDays"))
-                    netDueDays = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("discountPercentage"))
-                    discountPercentage = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("discountDays"))
-                    discountDays = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("netDueDayOfMonth"))
-                    netDueDayOfMonth = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("dueNextMonthDays"))
-                    dueNextMonthDays = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("discountBeforeDayOfMonth"))
-                    discountBeforeDayOfMonth = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = TermFormFactory.getCreateTermForm();
                 
-                commandForm.setTermName(termName);
-                commandForm.setTermTypeName(termTypeName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
-                commandForm.setNetDueDays(netDueDays);
-                commandForm.setDiscountPercentage(discountPercentage);
-                commandForm.setDiscountDays(discountDays);
-                commandForm.setNetDueDayOfMonth(netDueDayOfMonth);
-                commandForm.setDueNextMonthDays(dueNextMonthDays);
-                commandForm.setDiscountBeforeDayOfMonth(discountBeforeDayOfMonth);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(termService.createTerm(initialDataParser.getUserVisit(), commandForm));
                 
-                initialDataParser.pushHandler(new TermHandler(initialDataParser, this, termName));
+                initialDataParser.pushHandler(new TermHandler(initialDataParser, this, commandForm.getTermName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

@@ -47,23 +47,11 @@ public class RecoveryQuestionHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("recoveryQuestionDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var createRecoveryQuestionDescriptionForm = UserFormFactory.getCreateRecoveryQuestionDescriptionForm();
                 
                 createRecoveryQuestionDescriptionForm.setRecoveryQuestionName(recoveryQuestionName);
-                createRecoveryQuestionDescriptionForm.setLanguageIsoName(languageIsoName);
-                createRecoveryQuestionDescriptionForm.setDescription(description);
+                createRecoveryQuestionDescriptionForm.set(getAttrsMap(attrs));
                 
                 userService.createRecoveryQuestionDescription(initialDataParser.getUserVisit(), createRecoveryQuestionDescriptionForm);
             } catch (Exception e) {

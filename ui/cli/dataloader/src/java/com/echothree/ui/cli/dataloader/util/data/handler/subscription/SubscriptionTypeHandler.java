@@ -49,56 +49,24 @@ public class SubscriptionTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("subscriptionTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = SubscriptionFormFactory.getCreateSubscriptionTypeDescriptionForm();
                 
                 commandForm.setSubscriptionKindName(subscriptionKindName);
                 commandForm.setSubscriptionTypeName(subscriptionTypeName);
-                commandForm.setLanguageIsoName(languageIsoName);
-                commandForm.setDescription(description);
+                commandForm.set(getAttrsMap(attrs));
                 
                 subscriptionService.createSubscriptionTypeDescription(initialDataParser.getUserVisit(), commandForm);
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         } else if(localName.equals("subscriptionTypeChain")) {
-            String chainTypeName = null;
-            String chainName = null;
-            String unitOfMeasureTypeName = null;
-            String remainingTime = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("chainTypeName"))
-                    chainTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("chainName"))
-                    chainName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("unitOfMeasureTypeName"))
-                    unitOfMeasureTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("remainingTime"))
-                    remainingTime = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = SubscriptionFormFactory.getCreateSubscriptionTypeChainForm();
                 
                 commandForm.setSubscriptionKindName(subscriptionKindName);
                 commandForm.setSubscriptionTypeName(subscriptionTypeName);
-                commandForm.setChainTypeName(chainTypeName);
-                commandForm.setChainName(chainName);
-                commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
-                commandForm.setRemainingTime(remainingTime);
+                commandForm.set(getAttrsMap(attrs));
                 
                 subscriptionService.createSubscriptionTypeChain(initialDataParser.getUserVisit(), commandForm);
             } catch (Exception e) {

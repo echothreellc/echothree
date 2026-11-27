@@ -47,23 +47,11 @@ public class ItemCategoryHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("itemCategoryDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var createItemCategoryDescriptionForm = ItemFormFactory.getCreateItemCategoryDescriptionForm();
                 
                 createItemCategoryDescriptionForm.setItemCategoryName(itemCategoryName);
-                createItemCategoryDescriptionForm.setLanguageIsoName(languageIsoName);
-                createItemCategoryDescriptionForm.setDescription(description);
+                createItemCategoryDescriptionForm.set(getAttrsMap(attrs));
                 
                 itemService.createItemCategoryDescription(initialDataParser.getUserVisit(), createItemCategoryDescriptionForm);
             } catch (Exception e) {

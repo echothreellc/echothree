@@ -44,30 +44,14 @@ public class RelatedItemTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("relatedItemType")) {
-            String relatedItemTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("relatedItemTypeName"))
-                    relatedItemTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = ItemFormFactory.getCreateRelatedItemTypeForm();
                 
-                commandForm.setRelatedItemTypeName(relatedItemTypeName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
+                commandForm.set(getAttrsMap(attrs));
                 
                 itemService.createRelatedItemType(initialDataParser.getUserVisit(), commandForm);
                 
-                initialDataParser.pushHandler(new RelatedItemTypeHandler(initialDataParser, this, relatedItemTypeName));
+                initialDataParser.pushHandler(new RelatedItemTypeHandler(initialDataParser, this, commandForm.getRelatedItemTypeName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

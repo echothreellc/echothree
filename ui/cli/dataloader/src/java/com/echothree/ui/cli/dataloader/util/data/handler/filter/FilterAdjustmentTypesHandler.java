@@ -44,30 +44,14 @@ public class FilterAdjustmentTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("filterAdjustmentType")) {
-            String filterAdjustmentTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("filterAdjustmentTypeName"))
-                    filterAdjustmentTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = FilterFormFactory.getCreateFilterAdjustmentTypeForm();
                 
-                commandForm.setFilterAdjustmentTypeName(filterAdjustmentTypeName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
+                commandForm.set(getAttrsMap(attrs));
                 
                 filterService.createFilterAdjustmentType(initialDataParser.getUserVisit(), commandForm);
                 
-                initialDataParser.pushHandler(new FilterAdjustmentTypeHandler(initialDataParser, this, filterAdjustmentTypeName));
+                initialDataParser.pushHandler(new FilterAdjustmentTypeHandler(initialDataParser, this, commandForm.getFilterAdjustmentTypeName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

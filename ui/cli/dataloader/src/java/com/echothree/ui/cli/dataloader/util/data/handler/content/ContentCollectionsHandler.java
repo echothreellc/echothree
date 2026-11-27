@@ -44,25 +44,15 @@ public class ContentCollectionsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("contentCollection")) {
-            String contentCollectionName = null;
-            String doUpdate = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("contentCollectionName"))
-                    contentCollectionName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("doUpdate"))
-                    doUpdate = attrs.getValue(i);
-            }
-            
             try {
                 var createContentCollectionForm = ContentFormFactory.getCreateContentCollectionForm();
                 
-                createContentCollectionForm.setContentCollectionName(contentCollectionName);
+                createContentCollectionForm.set(getAttrsMap(attrs));
                 
                 contentService.createContentCollection(initialDataParser.getUserVisit(), createContentCollectionForm);
                 
-                initialDataParser.pushHandler(new ContentCollectionHandler(initialDataParser, this, contentCollectionName));
+                initialDataParser.pushHandler(new ContentCollectionHandler(initialDataParser, this,
+                        createContentCollectionForm.getContentCollectionName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

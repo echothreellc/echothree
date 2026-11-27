@@ -54,17 +54,6 @@ public class RatingTypeListItemHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("ratingTypeListItemDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var createRatingTypeListItemDescriptionForm = RatingFormFactory.getCreateRatingTypeListItemDescriptionForm();
                 
@@ -72,8 +61,7 @@ public class RatingTypeListItemHandler
                 createRatingTypeListItemDescriptionForm.setEntityTypeName(entityTypeName);
                 createRatingTypeListItemDescriptionForm.setRatingTypeName(ratingTypeName);
                 createRatingTypeListItemDescriptionForm.setRatingTypeListItemName(ratingTypeListItemName);
-                createRatingTypeListItemDescriptionForm.setLanguageIsoName(languageIsoName);
-                createRatingTypeListItemDescriptionForm.setDescription(description);
+                createRatingTypeListItemDescriptionForm.set(getAttrsMap(attrs));
                 
                 ratingService.createRatingTypeListItemDescription(initialDataParser.getUserVisit(), createRatingTypeListItemDescriptionForm);
             } catch (Exception e) {

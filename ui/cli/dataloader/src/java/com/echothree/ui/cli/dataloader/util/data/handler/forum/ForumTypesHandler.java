@@ -44,26 +44,12 @@ public class ForumTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("forumType")) {
-            String forumTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var forumTypeName = attrs.getValue("forumTypeName");
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("forumTypeName"))
-                    forumTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var form = ForumFormFactory.getCreateForumTypeForm();
                 
-                form.setForumTypeName(forumTypeName);
-                form.setIsDefault(isDefault);
-                form.setSortOrder(sortOrder);
+                form.set(getAttrsMap(attrs));
                 
                 forumService.createForumType(initialDataParser.getUserVisit(), form);
             } catch (Exception e) {

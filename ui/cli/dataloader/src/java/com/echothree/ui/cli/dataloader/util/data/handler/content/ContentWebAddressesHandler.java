@@ -44,26 +44,15 @@ public class ContentWebAddressesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("contentWebAddress")) {
-            String contentWebAddressName = null;
-            String contentCollectionName = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("contentWebAddressName"))
-                    contentWebAddressName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("contentCollectionName"))
-                    contentCollectionName = attrs.getValue(i);
-            }
-            
             try {
                 var createContentWebAddressForm = ContentFormFactory.getCreateContentWebAddressForm();
                 
-                createContentWebAddressForm.setContentWebAddressName(contentWebAddressName);
-                createContentWebAddressForm.setContentCollectionName(contentCollectionName);
+                createContentWebAddressForm.set(getAttrsMap(attrs));
                 
                 contentService.createContentWebAddress(initialDataParser.getUserVisit(), createContentWebAddressForm);
                 
-                initialDataParser.pushHandler(new ContentWebAddressHandler(initialDataParser, this, contentWebAddressName));
+                initialDataParser.pushHandler(new ContentWebAddressHandler(initialDataParser, this,
+                        createContentWebAddressForm.getContentWebAddressName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

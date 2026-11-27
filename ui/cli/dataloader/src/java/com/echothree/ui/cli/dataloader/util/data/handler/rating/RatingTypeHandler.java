@@ -51,58 +51,31 @@ public class RatingTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("ratingTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var createRatingTypeDescriptionForm = RatingFormFactory.getCreateRatingTypeDescriptionForm();
                 
                 createRatingTypeDescriptionForm.setComponentVendorName(componentVendorName);
                 createRatingTypeDescriptionForm.setEntityTypeName(entityTypeName);
                 createRatingTypeDescriptionForm.setRatingTypeName(ratingTypeName);
-                createRatingTypeDescriptionForm.setLanguageIsoName(languageIsoName);
-                createRatingTypeDescriptionForm.setDescription(description);
+                createRatingTypeDescriptionForm.set(getAttrsMap(attrs));
                 
                 ratingService.createRatingTypeDescription(initialDataParser.getUserVisit(), createRatingTypeDescriptionForm);
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         } else if(localName.equals("ratingTypeListItem")) {
-            String ratingTypeListItemName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("ratingTypeListItemName"))
-                    ratingTypeListItemName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var createRatingTypeListItemForm = RatingFormFactory.getCreateRatingTypeListItemForm();
                 
                 createRatingTypeListItemForm.setComponentVendorName(componentVendorName);
                 createRatingTypeListItemForm.setEntityTypeName(entityTypeName);
                 createRatingTypeListItemForm.setRatingTypeName(ratingTypeName);
-                createRatingTypeListItemForm.setRatingTypeListItemName(ratingTypeListItemName);
-                createRatingTypeListItemForm.setIsDefault(isDefault);
-                createRatingTypeListItemForm.setSortOrder(sortOrder);
+                createRatingTypeListItemForm.set(getAttrsMap(attrs));
                 
                 ratingService.createRatingTypeListItem(initialDataParser.getUserVisit(), createRatingTypeListItemForm);
                 
-                initialDataParser.pushHandler(new RatingTypeListItemHandler(initialDataParser, this, componentVendorName, entityTypeName, ratingTypeName, ratingTypeListItemName));
+                initialDataParser.pushHandler(new RatingTypeListItemHandler(initialDataParser, this, componentVendorName,
+                        entityTypeName, ratingTypeName, createRatingTypeListItemForm.getRatingTypeListItemName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

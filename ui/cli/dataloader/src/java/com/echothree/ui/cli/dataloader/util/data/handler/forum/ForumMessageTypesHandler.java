@@ -44,26 +44,12 @@ public class ForumMessageTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("forumMessageType")) {
-            String forumMessageTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var forumMessageTypeName = attrs.getValue("forumMessageTypeName");
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("forumMessageTypeName"))
-                    forumMessageTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var form = ForumFormFactory.getCreateForumMessageTypeForm();
                 
-                form.setForumMessageTypeName(forumMessageTypeName);
-                form.setIsDefault(isDefault);
-                form.setSortOrder(sortOrder);
+                form.set(getAttrsMap(attrs));
                 
                 forumService.createForumMessageType(initialDataParser.getUserVisit(), form);
             } catch (Exception e) {

@@ -44,30 +44,14 @@ public class TerminationTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("terminationType")) {
-            String terminationTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("terminationTypeName"))
-                    terminationTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var form = EmployeeFormFactory.getCreateTerminationTypeForm();
                 
-                form.setTerminationTypeName(terminationTypeName);
-                form.setIsDefault(isDefault);
-                form.setSortOrder(sortOrder);
+                form.set(getAttrsMap(attrs));
                 
                 employeeService.createTerminationType(initialDataParser.getUserVisit(), form);
                 
-                initialDataParser.pushHandler(new TerminationTypeHandler(initialDataParser, this, terminationTypeName));
+                initialDataParser.pushHandler(new TerminationTypeHandler(initialDataParser, this, form.getTerminationTypeName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

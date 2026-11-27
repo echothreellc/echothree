@@ -47,46 +47,22 @@ public class PartyTypeUseTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("partyTypeUseTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var form = PartyFormFactory.getCreatePartyTypeUseTypeDescriptionForm();
                 
                 form.setPartyTypeUseTypeName(partyTypeUseTypeName);
-                form.setLanguageIsoName(languageIsoName);
-                form.setDescription(description);
+                form.set(getAttrsMap(attrs));
                 
                 partyService.createPartyTypeUseTypeDescription(initialDataParser.getUserVisit(), form);
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         } else if(localName.equals("partyTypeUse")) {
-            String partyTypeName = null;
-            String isDefault = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("partyTypeName"))
-                    partyTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-            }
-            
             try {
                 var form = PartyFormFactory.getCreatePartyTypeUseForm();
                 
                 form.setPartyTypeUseTypeName(partyTypeUseTypeName);
-                form.setPartyTypeName(partyTypeName);
-                form.setIsDefault(isDefault);
+                form.set(getAttrsMap(attrs));
                 
                 partyService.createPartyTypeUse(initialDataParser.getUserVisit(), form);
             } catch (Exception e) {

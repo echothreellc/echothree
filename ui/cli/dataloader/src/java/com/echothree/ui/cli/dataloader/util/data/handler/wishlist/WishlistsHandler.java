@@ -45,19 +45,9 @@ public class WishlistsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("wishlist")) {
-            String wishlistTypeName = null;
-            String currencyIsoName = null;
-            String sourceName = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("wishlistTypeName"))
-                    wishlistTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("currencyIsoName"))
-                    currencyIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sourceName"))
-                    sourceName = attrs.getValue(i);
-            }
+            var wishlistTypeName = attrs.getValue("wishlistTypeName");
+            var currencyIsoName = attrs.getValue("currencyIsoName");
+            var sourceName = attrs.getValue("sourceName");
             
             initialDataParser.pushHandler(new WishlistHandler(initialDataParser, this, partyName, wishlistTypeName, currencyIsoName,
                     sourceName));

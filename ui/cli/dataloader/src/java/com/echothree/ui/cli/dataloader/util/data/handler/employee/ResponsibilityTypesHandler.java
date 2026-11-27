@@ -44,30 +44,14 @@ public class ResponsibilityTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("responsibilityType")) {
-            String responsibilityTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("responsibilityTypeName"))
-                    responsibilityTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var form = EmployeeFormFactory.getCreateResponsibilityTypeForm();
                 
-                form.setResponsibilityTypeName(responsibilityTypeName);
-                form.setIsDefault(isDefault);
-                form.setSortOrder(sortOrder);
+                form.set(getAttrsMap(attrs));
                 
                 employeeService.createResponsibilityType(initialDataParser.getUserVisit(), form);
                 
-                initialDataParser.pushHandler(new ResponsibilityTypeHandler(initialDataParser, this, responsibilityTypeName));
+                initialDataParser.pushHandler(new ResponsibilityTypeHandler(initialDataParser, this, form.getResponsibilityTypeName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

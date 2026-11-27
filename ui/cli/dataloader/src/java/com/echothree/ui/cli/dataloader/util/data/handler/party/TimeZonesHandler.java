@@ -44,34 +44,14 @@ public class TimeZonesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("timeZone")) {
-            String javaTimeZoneName = null;
-            String unixTimeZoneName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("javaTimeZoneName"))
-                    javaTimeZoneName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("unixTimeZoneName"))
-                    unixTimeZoneName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var createTimeZoneForm = PartyFormFactory.getCreateTimeZoneForm();
                 
-                createTimeZoneForm.setJavaTimeZoneName(javaTimeZoneName);
-                createTimeZoneForm.setUnixTimeZoneName(unixTimeZoneName);
-                createTimeZoneForm.setIsDefault(isDefault);
-                createTimeZoneForm.setSortOrder(sortOrder);
+                createTimeZoneForm.set(getAttrsMap(attrs));
                 
                 partyService.createTimeZone(initialDataParser.getUserVisit(), createTimeZoneForm);
                 
-                initialDataParser.pushHandler(new TimeZoneHandler(initialDataParser, this, javaTimeZoneName));
+                initialDataParser.pushHandler(new TimeZoneHandler(initialDataParser, this, createTimeZoneForm.getJavaTimeZoneName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

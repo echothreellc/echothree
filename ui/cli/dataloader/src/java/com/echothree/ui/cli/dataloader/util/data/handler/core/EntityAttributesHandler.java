@@ -116,13 +116,7 @@ public class EntityAttributesHandler
             
             coreService.createEntityListItemAttribute(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("entityMultipleListItemAttributes")) {
-            String entityAttributeName = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("entityAttributeName"))
-                    entityAttributeName = attrs.getValue(i);
-            }
+            var entityAttributeName = attrs.getValue("entityAttributeName");
             
             try {
                 initialDataParser.pushHandler(new EntityMultipleListItemAttributesHandler(initialDataParser, this, entityRef, entityAttributeName));

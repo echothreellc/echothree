@@ -52,59 +52,31 @@ public class CommentTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("commentTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = CommentFormFactory.getCreateCommentTypeDescriptionForm();
                 
                 commandForm.setComponentVendorName(componentVendorName);
                 commandForm.setEntityTypeName(entityTypeName);
                 commandForm.setCommentTypeName(commentTypeName);
-                commandForm.setLanguageIsoName(languageIsoName);
-                commandForm.setDescription(description);
+                commandForm.set(getAttrsMap(attrs));
                 
                 commentService.createCommentTypeDescription(initialDataParser.getUserVisit(), commandForm);
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         } else if(localName.equals("commentUsageType")) {
-            String commentUsageTypeName = null;
-            String selectedByDefault = null;
-            String sortOrder = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("commentUsageTypeName"))
-                    commentUsageTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("selectedByDefault"))
-                    selectedByDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = CommentFormFactory.getCreateCommentUsageTypeForm();
                 
                 commandForm.setComponentVendorName(componentVendorName);
                 commandForm.setEntityTypeName(entityTypeName);
                 commandForm.setCommentTypeName(commentTypeName);
-                commandForm.setCommentUsageTypeName(commentUsageTypeName);
-                commandForm.setSelectedByDefault(selectedByDefault);
-                commandForm.setSortOrder(sortOrder);
+                commandForm.set(getAttrsMap(attrs));
                 
                 commentService.createCommentUsageType(initialDataParser.getUserVisit(), commandForm);
                 
                 initialDataParser.pushHandler(new CommentUsageTypeHandler(initialDataParser, this, componentVendorName,
-                        entityTypeName, commentTypeName, commentUsageTypeName));
+                        entityTypeName, commentTypeName, commandForm.getCommentUsageTypeName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

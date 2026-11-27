@@ -50,76 +50,24 @@ public class CarrierServiceHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("carrierServiceDescription")) {
-            String attrLanguageIsoName = null;
-            String attrDescription = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    attrLanguageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    attrDescription = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = CarrierFormFactory.getCreateCarrierServiceDescriptionForm();
                 
                 commandForm.setCarrierName(carrierName);
                 commandForm.setCarrierServiceName(carrierServiceName);
-                commandForm.setLanguageIsoName(attrLanguageIsoName);
-                commandForm.setDescription(attrDescription);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(carrierService.createCarrierServiceDescription(initialDataParser.getUserVisit(), commandForm));
             } catch (Exception e) {
                 throw new SAXException(e);
             }
         } else if(localName.equals("carrierServiceOption")) {
-            String carrierOptionName = null;
-            String isRecommended = null;
-            String isRequired = null;
-            String recommendedItemSelectorName = null;
-            String requiredItemSelectorName = null;
-            String recommendedOrderSelectorName = null;
-            String requiredOrderSelectorName = null;
-            String recommendedShipmentSelectorName = null;
-            String requiredShipmentSelectorName = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("carrierOptionName"))
-                    carrierOptionName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isRecommended"))
-                    isRecommended = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isRequired"))
-                    isRequired = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("recommendedItemSelectorName"))
-                    recommendedItemSelectorName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("requiredItemSelectorName"))
-                    requiredItemSelectorName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("recommendedOrderSelectorName"))
-                    recommendedOrderSelectorName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("requiredOrderSelectorName"))
-                    requiredOrderSelectorName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("recommendedShipmentSelectorName"))
-                    recommendedShipmentSelectorName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("requiredShipmentSelectorName"))
-                    requiredShipmentSelectorName = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = CarrierFormFactory.getCreateCarrierServiceOptionForm();
                 
                 commandForm.setCarrierName(carrierName);
                 commandForm.setCarrierServiceName(carrierServiceName);
-                commandForm.setCarrierOptionName(carrierOptionName);
-                commandForm.setIsRecommended(isRecommended);
-                commandForm.setIsRequired(isRequired);
-                commandForm.setRecommendedItemSelectorName(recommendedItemSelectorName);
-                commandForm.setRequiredItemSelectorName(requiredItemSelectorName);
-                commandForm.setRecommendedOrderSelectorName(recommendedOrderSelectorName);
-                commandForm.setRequiredOrderSelectorName(requiredOrderSelectorName);
-                commandForm.setRecommendedShipmentSelectorName(recommendedShipmentSelectorName);
-                commandForm.setRequiredShipmentSelectorName(requiredShipmentSelectorName);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(carrierService.createCarrierServiceOption(initialDataParser.getUserVisit(), commandForm));
             } catch (Exception e) {

@@ -43,27 +43,13 @@ public class NameSuffixesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("nameSuffix")) {
-            String description = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var description = attrs.getValue("description");
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 if(initialDataParser.getNameSuffixes().get(description) == null) {
                     var form = PartyFormFactory.getCreateNameSuffixForm();
                     
-                    form.setDescription(description);
-                    form.setIsDefault(isDefault);
-                    form.setSortOrder(sortOrder);
+                    form.set(getAttrsMap(attrs));
 
                     var commandResult = partyService.createNameSuffix(initialDataParser.getUserVisit(), form);
                     var executionResult = commandResult.getExecutionResult();

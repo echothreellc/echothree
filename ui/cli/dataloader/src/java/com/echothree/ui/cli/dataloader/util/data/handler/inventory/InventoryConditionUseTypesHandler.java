@@ -44,30 +44,15 @@ public class InventoryConditionUseTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("inventoryConditionUseType")) {
-            String inventoryConditionUseTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("inventoryConditionUseTypeName"))
-                    inventoryConditionUseTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
             try {
                 var commandForm = InventoryFormFactory.getCreateInventoryConditionUseTypeForm();
                 
-                commandForm.setInventoryConditionUseTypeName(inventoryConditionUseTypeName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
+                commandForm.set(getAttrsMap(attrs));
                 
                 checkCommandResult(inventoryService.createInventoryConditionUseType(initialDataParser.getUserVisit(), commandForm));
                 
-                initialDataParser.pushHandler(new InventoryConditionUseTypeHandler(initialDataParser, this, inventoryConditionUseTypeName));
+                initialDataParser.pushHandler(new InventoryConditionUseTypeHandler(initialDataParser, this,
+                        commandForm.getInventoryConditionUseTypeName()));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

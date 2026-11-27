@@ -44,18 +44,12 @@ public class PartyRelationshipTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("partyRelationshipType")) {
-            String partyRelationshipTypeName = null;
+            var partyRelationshipTypeName = attrs.getValue("partyRelationshipTypeName");
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("partyRelationshipTypeName"))
-                    partyRelationshipTypeName = attrs.getValue(i);
-            }
-            
             try {
                 var createPartyRelationshipTypeForm = PartyFormFactory.getCreatePartyRelationshipTypeForm();
                 
-                createPartyRelationshipTypeForm.setPartyRelationshipTypeName(partyRelationshipTypeName);
+                createPartyRelationshipTypeForm.set(getAttrsMap(attrs));
                 
                 partyService.createPartyRelationshipType(initialDataParser.getUserVisit(), createPartyRelationshipTypeForm);
             } catch (Exception e) {

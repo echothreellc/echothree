@@ -46,9 +46,8 @@ public class CommunicationSourcesHandler
             throws SAXException {
         if(localName.equals("communicationSource")) {
             var commandForm = CommunicationFormFactory.getCreateCommunicationSourceForm();
-            var attrsMap = getAttrsMap(attrs);
-            
-            commandForm.set(attrsMap);
+
+            commandForm.set(getAttrsMap(attrs));
             
             communicationService.createCommunicationSource(initialDataParser.getUserVisit(), commandForm);
             
