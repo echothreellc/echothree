@@ -26,6 +26,31 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+/**
+ * Resolves the currency used to validate a monetary field.
+ *
+ * <p>A currency supplied through {@link Validator#setCurrency(Currency)} takes precedence. Otherwise,
+ * the field name in its {@link FieldDefinition} can include the options below.
+ *
+ * <dl>
+ *   <dt>{@code CurrencyIsoName,FieldName}</dt>
+ *   <dd>Reads a currency ISO code from the named form field. A missing or unknown code is a validation error.</dd>
+ *   <dt>{@code VendorName,FieldName}</dt>
+ *   <dd>Resolves the vendor named in the form field and uses its party's preferred currency. If the party has no
+ *       currency preference, this lookup uses the system default.</dd>
+ *   <dt>{@code DefaultCurrencyIfOmitted,true}</dt>
+ *   <dd>Allows an omitted ISO code to use the {@code VendorName} lookup, if configured, or the system default.
+ *       The value {@code true} is a literal flag.</dd>
+ * </dl>
+ *
+ * <p>For example, {@code MinimumPurchaseOrderAmount:CurrencyIsoName,PreferredCurrencyIsoName:DefaultCurrencyIfOmitted,true}
+ * uses the submitted preference or the system default when that preference is blank or omitted.
+ * With neither currency lookup option configured, validation uses the system default.
+ *
+ * <p>During form validation, {@link Validator} validates and normalizes any referenced fields in the same pass
+ * before parsing the amount, regardless of their declaration order. A validation error on a referenced field
+ * prevents parsing the amount.
+ */
 public abstract class BaseCurrencyFieldType
         extends BaseFieldType {
     
