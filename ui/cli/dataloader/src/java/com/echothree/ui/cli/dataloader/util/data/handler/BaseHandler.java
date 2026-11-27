@@ -19,6 +19,7 @@ package com.echothree.ui.cli.dataloader.util.data.handler;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.util.common.command.BaseEditResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.form.BaseEdit;
@@ -103,43 +104,49 @@ public abstract class BaseHandler {
         return logger;
     }
 
-    protected <E extends BaseEdit, F extends BaseEditForm<?, E>, R extends BaseEditResult<E>, C extends BaseForm>
-            boolean editOrCreate(F editForm, BiFunction<UserVisitPK, F, CommandResult<R>> editCommand,
-            C createForm, BiFunction<UserVisitPK, C, CommandResult<?>> createCommand,
+    protected record EditOutcome<E extends BaseEdit, C extends BaseResult>(boolean successful, E lockedEdit, C createdRecord) {
+    }
+
+    protected <E extends BaseEdit, F extends BaseEditForm<?, E>, R extends BaseEditResult<E>, C extends BaseForm,
+            CR extends BaseResult> EditOutcome<E, CR> editOrCreate(F editForm, BiFunction<UserVisitPK, F, CommandResult<R>> editCommand,
+            C createForm, BiFunction<UserVisitPK, C, CommandResult<CR>> createCommand,
             ExecutionErrors missingRecordError, Class<E> editType) throws SAXException {
         var userVisit = initialDataParser.getUserVisit();
         editForm.setEditMode(EditMode.LOCK);
 
         var lockResult = editCommand.apply(userVisit, editForm);
-        boolean successful;
+        EditOutcome<E, CR> outcome;
         if(lockResult.hasErrors()) {
             if(lockResult.containsExecutionError(missingRecordError.name()) && !lockResult.hasSecurityMessages()
                     && !lockResult.hasValidationErrors()
                     && lockResult.getExecutionResult().getExecutionErrors().size(Messages.EXECUTION_ERROR) == 1) {
                 var createResult = createCommand.apply(userVisit, createForm);
                 checkCommandResult(createForm, createResult);
-                successful = !createResult.hasErrors();
+                var successful = !createResult.hasErrors();
+                outcome = new EditOutcome<>(successful, null, successful ? createResult.getResult() : null);
             } else {
                 checkCommandResult(editForm, lockResult);
-                successful = false;
+                outcome = new EditOutcome<>(false, null, null);
             }
         } else {
-            successful = completeEdit(userVisit, editForm, editCommand, lockResult, createForm.get(), editType);
+            var edit = completeEdit(userVisit, editForm, editCommand, lockResult, createForm.get(), editType);
+            outcome = new EditOutcome<>(edit != null, edit, null);
         }
 
-        return successful;
+        return outcome;
     }
 
     private <E extends BaseEdit, F extends BaseEditForm<?, E>, R extends BaseEditResult<E>>
-            boolean completeEdit(UserVisitPK userVisit, F editForm, BiFunction<UserVisitPK, F, CommandResult<R>> editCommand,
+            E completeEdit(UserVisitPK userVisit, F editForm, BiFunction<UserVisitPK, F, CommandResult<R>> editCommand,
             CommandResult<R> lockResult, Map<String, Object> suppliedValues, Class<E> editType) throws SAXException {
         boolean successful = true;
         boolean abandonLock = true;
+        E edit;
 
         try {
             checkCommandResult(editForm, lockResult);
             var lockedRecord = lockResult.getResult();
-            var edit = lockedRecord == null ? null : lockedRecord.getEdit();
+            edit = lockedRecord == null ? null : lockedRecord.getEdit();
             if(edit == null) {
                 throw new SAXException(editForm.getFormName() + " returned no edit payload after LOCK");
             }
@@ -165,7 +172,7 @@ public abstract class BaseHandler {
             successful = successful && abandoned;
         }
 
-        return successful;
+        return successful ? edit : null;
     }
 
     protected static <F extends BaseForm> void setFormFields(F form, Class<F> formType, Map<String, Object> suppliedValues) {

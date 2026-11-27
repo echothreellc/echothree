@@ -1,0 +1,166 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2026 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.ui.cli.dataloader.util.data;
+
+import com.echothree.control.user.core.common.CoreUtil;
+import com.echothree.control.user.core.common.form.CoreFormFactory;
+import com.echothree.control.user.item.common.ItemUtil;
+import com.echothree.control.user.item.common.form.ItemFormFactory;
+import com.echothree.control.user.workflow.common.WorkflowUtil;
+import com.echothree.control.user.workflow.common.form.WorkflowFormFactory;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.client.test.UserVisitTestCase;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.CommandResult;
+import java.io.StringReader;
+import java.util.UUID;
+import javax.xml.parsers.SAXParserFactory;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.xml.sax.InputSource;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+@Tag("integration")
+class DataLoaderResolvedParentTest
+        extends UserVisitTestCase {
+
+    @Test
+    void loadsWorkflowDescriptionsUnderAnAlternateParentKey() throws Exception {
+        var service = WorkflowUtil.getHome();
+        var workflowName = newTestName();
+        var createForm = WorkflowFormFactory.getCreateWorkflowForm();
+        createForm.setWorkflowName(workflowName);
+        createForm.setSortOrder("7");
+        var workflow = requireSuccess(service.createWorkflow(userVisitPK, createForm));
+
+        try {
+            loadXml("""
+                    <initialData>
+                        <workflows>
+                            <workflow entityRef="%s" sortOrder="8">
+                                <workflowDescription languageIsoName="en" description="Loaded by entity reference"/>
+                            </workflow>
+                        </workflows>
+                    </initialData>
+                    """.formatted(workflow.getEntityRef()));
+
+            var getDescriptionForm = WorkflowFormFactory.getGetWorkflowDescriptionForm();
+            getDescriptionForm.setWorkflowName(workflowName);
+            getDescriptionForm.setLanguageIsoName("en");
+            var description = requireSuccess(service.getWorkflowDescription(userVisitPK, getDescriptionForm));
+            assertEquals("Loaded by entity reference", description.getWorkflowDescription().getDescription());
+
+            loadXml("""
+                    <initialData>
+                        <workflows>
+                            <workflow uuid="%s" commandAction="none" sortOrder="9">
+                                <workflowDescription languageIsoName="en" description="Loaded by UUID"/>
+                            </workflow>
+                        </workflows>
+                    </initialData>
+                    """.formatted(uuidOf(workflow.getEntityRef())));
+
+            description = requireSuccess(service.getWorkflowDescription(userVisitPK, getDescriptionForm));
+            assertEquals("Loaded by UUID", description.getWorkflowDescription().getDescription());
+            var getWorkflowForm = WorkflowFormFactory.getGetWorkflowForm();
+            getWorkflowForm.setWorkflowName(workflowName);
+            assertEquals(Integer.valueOf(8), requireSuccess(service.getWorkflow(userVisitPK, getWorkflowForm)).getWorkflow().getSortOrder());
+        } finally {
+            var deleteForm = WorkflowFormFactory.getDeleteWorkflowForm();
+            deleteForm.setWorkflowName(workflowName);
+            assertNoErrors(service.deleteWorkflow(userVisitPK, deleteForm));
+        }
+    }
+
+    @Test
+    void loadsItemAliasTypeDescriptionUnderAnUnchangedParentByUuid() throws Exception {
+        var service = ItemUtil.getHome();
+        var itemAliasTypeName = newTestName();
+        var createForm = ItemFormFactory.getCreateItemAliasTypeForm();
+        createForm.setItemAliasTypeName(itemAliasTypeName);
+        createForm.setItemAliasChecksumTypeName("NONE");
+        createForm.setAllowMultiple("false");
+        createForm.setIsDefault("false");
+        createForm.setSortOrder("7");
+        var aliasType = requireSuccess(service.createItemAliasType(userVisitPK, createForm));
+
+        try {
+            loadXml("""
+                    <initialData>
+                        <itemAliasTypes>
+                            <itemAliasType uuid="%s">
+                                <itemAliasTypeDescription languageIsoName="en" description="Alias type loaded by UUID"/>
+                            </itemAliasType>
+                        </itemAliasTypes>
+                    </initialData>
+                    """.formatted(uuidOf(aliasType.getEntityRef())));
+
+            var getDescriptionForm = ItemFormFactory.getGetItemAliasTypeDescriptionForm();
+            getDescriptionForm.setItemAliasTypeName(itemAliasTypeName);
+            getDescriptionForm.setLanguageIsoName("en");
+            var description = requireSuccess(service.getItemAliasTypeDescription(userVisitPK, getDescriptionForm));
+            assertEquals("Alias type loaded by UUID", description.getItemAliasTypeDescription().getDescription());
+        } finally {
+            var deleteForm = ItemFormFactory.getDeleteItemAliasTypeForm();
+            deleteForm.setItemAliasTypeName(itemAliasTypeName);
+            assertNoErrors(service.deleteItemAliasType(userVisitPK, deleteForm));
+        }
+    }
+
+    private void loadXml(String xml) throws Exception {
+        var parser = new InitialDataParser("resolved-parent-test.xml") {
+            @Override
+            public UserVisitPK getUserVisit() {
+                return DataLoaderResolvedParentTest.this.userVisitPK;
+            }
+        };
+        parser.setupHandlers();
+
+        var factory = SAXParserFactory.newInstance();
+        factory.setNamespaceAware(true);
+        var reader = factory.newSAXParser().getXMLReader();
+        reader.setContentHandler(parser);
+        reader.setErrorHandler(parser);
+        reader.parse(new InputSource(new StringReader(xml)));
+    }
+
+    private String uuidOf(String entityRef) throws Exception {
+        var form = CoreFormFactory.getGenerateUuidForm();
+        form.setEntityRef(entityRef);
+        form.setForceRegeneration("false");
+        var uuid = requireSuccess(CoreUtil.getHome().generateUuid(userVisitPK, form)).getUuid();
+        assertNotNull(uuid);
+        return uuid;
+    }
+
+    private static String newTestName() {
+        return "DL_PARENT_" + UUID.randomUUID().toString().replace("-", "").substring(0, 16);
+    }
+
+    private static void assertNoErrors(CommandResult<?> result) {
+        assertFalse(result.hasErrors(), result::toString);
+    }
+
+    private static <R extends BaseResult> R requireSuccess(CommandResult<R> result) {
+        assertNoErrors(result);
+        var payload = result.getResult();
+        assertNotNull(payload, result::toString);
+        return payload;
+    }
+}

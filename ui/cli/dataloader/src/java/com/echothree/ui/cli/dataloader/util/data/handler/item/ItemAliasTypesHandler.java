@@ -61,11 +61,20 @@ public class ItemAliasTypesHandler
 
             editForm.setSpec(spec);
             setFormFields(createForm, CreateItemAliasTypeForm.class, attrsMap);
-            var processChildren = editOrCreate(editForm, itemService::editItemAliasType, createForm, itemService::createItemAliasType,
+            var outcome = editOrCreate(editForm, itemService::editItemAliasType, createForm, itemService::createItemAliasType,
                     ExecutionErrors.UnknownItemAliasTypeName, ItemAliasTypeEdit.class);
 
-            if(processChildren) {
-                initialDataParser.pushHandler(new ItemAliasTypeHandler(initialDataParser, this, spec.getItemAliasTypeName()));
+            if(outcome.successful()) {
+                var itemAliasTypeName = spec.getItemAliasTypeName();
+                if(outcome.lockedEdit() != null) {
+                    itemAliasTypeName = outcome.lockedEdit().getItemAliasTypeName();
+                } else if(outcome.createdRecord() != null) {
+                    itemAliasTypeName = outcome.createdRecord().getItemAliasTypeName();
+                }
+                if(itemAliasTypeName == null) {
+                    throw new SAXException("Item alias type name is missing for child elements");
+                }
+                initialDataParser.pushHandler(new ItemAliasTypeHandler(initialDataParser, this, itemAliasTypeName));
             } else {
                 skipCurrentElement();
             }

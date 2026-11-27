@@ -25,6 +25,7 @@ import com.echothree.control.user.workflow.common.edit.WorkflowEditFactory;
 import com.echothree.control.user.workflow.common.form.CreateWorkflowForm;
 import com.echothree.control.user.workflow.common.form.EditWorkflowForm;
 import com.echothree.control.user.workflow.common.form.WorkflowFormFactory;
+import com.echothree.control.user.workflow.common.result.CreateWorkflowResult;
 import com.echothree.control.user.workflow.common.result.EditWorkflowResult;
 import com.echothree.control.user.workflow.common.result.WorkflowResultFactory;
 import com.echothree.control.user.workflow.common.spec.WorkflowSpecFactory;
@@ -319,7 +320,9 @@ class DataLoaderEditLifecycleTest {
             }, (visit, form) -> {
                 assertEquals(TEST_VISIT, visit);
                 creates.add(form);
-                return success();
+                var result = WorkflowResultFactory.getCreateWorkflowResult();
+                result.setWorkflowName(form.getWorkflowName());
+                return new CommandResult<>(null, null, new ExecutionResult<>(null, null, result));
             });
         }
     }
@@ -336,7 +339,7 @@ class DataLoaderEditLifecycleTest {
         }
 
         private boolean load(Map<String, Object> attrs, BiFunction<UserVisitPK, EditWorkflowForm, CommandResult<EditWorkflowResult>> editCommand,
-                BiFunction<UserVisitPK, CreateWorkflowForm, CommandResult<?>> createCommand) throws SAXException {
+                BiFunction<UserVisitPK, CreateWorkflowForm, CommandResult<CreateWorkflowResult>> createCommand) throws SAXException {
             var spec = WorkflowSpecFactory.getWorkflowUniversalSpec();
             var editForm = WorkflowFormFactory.getEditWorkflowForm();
             var createForm = WorkflowFormFactory.getCreateWorkflowForm();
@@ -345,7 +348,8 @@ class DataLoaderEditLifecycleTest {
             editForm.setSpec(spec);
             setFormFields(createForm, CreateWorkflowForm.class, attrs);
 
-            return editOrCreate(editForm, editCommand, createForm, createCommand, ExecutionErrors.UnknownWorkflowName, WorkflowEdit.class);
+            return editOrCreate(editForm, editCommand, createForm, createCommand, ExecutionErrors.UnknownWorkflowName, WorkflowEdit.class)
+                    .successful();
         }
 
         @Override
