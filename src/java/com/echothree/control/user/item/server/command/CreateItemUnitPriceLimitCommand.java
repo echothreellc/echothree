@@ -43,8 +43,8 @@ public class CreateItemUnitPriceLimitCommand
                 new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("MinimumUnitPrice", FieldType.UNSIGNED_PRICE_UNIT, false, null, null),
-                new FieldDefinition("MaximumUnitPrice", FieldType.UNSIGNED_PRICE_UNIT, false, null, null)
+                new FieldDefinition("MinimumUnitPrice:CurrencyIsoName,CurrencyIsoName", FieldType.UNSIGNED_PRICE_UNIT, false, null, null),
+                new FieldDefinition("MaximumUnitPrice:CurrencyIsoName,CurrencyIsoName", FieldType.UNSIGNED_PRICE_UNIT, false, null, null)
         );
     }
 
