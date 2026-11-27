@@ -128,19 +128,29 @@ public abstract class BaseHandler {
     }
 
     protected void checkCommandResult(BaseForm commandForm, CommandResult<?> commandResult) {
+        if(commandResult.hasExecutionWarnings()) {
+            var warnings = new StringJoiner("; ");
+            var executionWarnings = commandResult.getExecutionResult().getExecutionWarnings();
+
+            executionWarnings.get(Messages.EXECUTION_WARNING)
+                    .forEachRemaining(message -> appendMessage(warnings, "Execution", message));
+
+            getLogger().warn("{} at {}: {}", commandForm.getFormName(), initialDataParser.getSourceLocation(), warnings);
+        }
+
         if(commandResult.hasErrors()) {
             var errors = new StringJoiner("; ");
 
             if(commandResult.hasSecurityMessages()) {
                 var securityMessages = commandResult.getSecurityResult().getSecurityMessages();
                 securityMessages.get(Messages.SECURITY_MESSAGE)
-                        .forEachRemaining(message -> appendError(errors, "Security", message));
+                        .forEachRemaining(message -> appendMessage(errors, "Security", message));
             }
 
             if(commandResult.hasValidationErrors()) {
                 var validationMessages = commandResult.getValidationResult().getValidationMessages();
                 validationMessages.properties().forEachRemaining(fieldName -> validationMessages.get(fieldName)
-                        .forEachRemaining(message -> appendError(errors, "Validation (" + fieldName + ")", message)));
+                        .forEachRemaining(message -> appendMessage(errors, "Validation (" + fieldName + ")", message)));
             }
 
             if(commandResult.hasExecutionErrors()) {
@@ -149,7 +159,7 @@ public abstract class BaseHandler {
                     var key = message.getKey();
                     var errorName = key == null ? "" : key.substring(key.lastIndexOf('.') + 1);
                     if(doVerbose || !errorName.startsWith("Duplicate")) {
-                        appendError(errors, "Execution", message);
+                        appendMessage(errors, "Execution", message);
                     }
                 });
             }
@@ -159,15 +169,15 @@ public abstract class BaseHandler {
             }
         } else if(doVerbose) {
             getLogger().info("{} at {}: {}", commandForm.getFormName(), initialDataParser.getSourceLocation(),
-                    commandResult.getExecutionResult());
+                    commandResult.getResult());
         }
     }
 
-    private static void appendError(StringJoiner errors, String category, Message message) {
+    private static void appendMessage(StringJoiner messages, String category, Message message) {
         var key = message.getKey();
         var text = message.getMessage();
 
-        errors.add(category + " " + key + (text.equals("??" + key + "??") ? "" : " (" + text + ")"));
+        messages.add(category + " " + key + (text.equals("??" + key + "??") ? "" : " (" + text + ")"));
     }
     
     public static void setDoVerbose(boolean aDoVerbose) {
