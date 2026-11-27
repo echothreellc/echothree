@@ -22,6 +22,7 @@ import com.echothree.control.user.party.client.helper.PersonalTitlesHelper;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.NowhereHandler;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -93,20 +94,51 @@ public class InitialDataParser
     String name;
     UserVisitPK userVisitPK;
     private Locator documentLocator;
+    private int sourceLine = -1;
+    private int sourceColumn = -1;
+    private final Deque<String> elements = new ArrayDeque<>();
 
     @Override
     public void setDocumentLocator(Locator locator) {
         documentLocator = locator;
+        captureSourcePosition();
     }
 
     public String getSourceLocation() {
-        return documentLocator == null ? name : name + ":" + documentLocator.getLineNumber();
+        return getSourceLocation(sourceLine, sourceColumn);
+    }
+
+    private void captureSourcePosition() {
+        if(documentLocator != null) {
+            sourceLine = documentLocator.getLineNumber();
+            sourceColumn = documentLocator.getColumnNumber();
+        }
+    }
+
+    private String getSourceLocation(int lineNumber, int columnNumber) {
+        var location = new StringBuilder(name == null ? "XML input" : name);
+
+        if(lineNumber > 0) {
+            location.append(':').append(lineNumber);
+            if(columnNumber > 0) {
+                location.append(':').append(columnNumber);
+            }
+        }
+
+        var element = elements.peek();
+        if(element != null) {
+            location.append(" <").append(element).append('>');
+        }
+
+        return location.toString();
     }
     
     /** Start document. */
     @Override
     public void startDocument()
             throws SAXException {
+        captureSourcePosition();
+
         try {
             // load caches
             loadPersonalTitles();
@@ -120,6 +152,7 @@ public class InitialDataParser
     @Override
     public void endDocument()
             throws SAXException {
+        captureSourcePosition();
         clearUserVisit();
         
         personalTitles = null;
@@ -226,6 +259,9 @@ public class InitialDataParser
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
+        captureSourcePosition();
+        elements.push(qName.isEmpty() ? localName : qName);
+
         try {
             getDefaultHandler().startElement(namespaceURI, localName, qName, attrs);
         } catch(NamingException ne) {
@@ -236,12 +272,15 @@ public class InitialDataParser
     @Override
     public void endElement(String namespaceURI, String localName, String qName)
             throws SAXException {
+        captureSourcePosition();
         getDefaultHandler().endElement(namespaceURI, localName, qName);
+        elements.pop();
     }
     
     @Override
     public void characters(char ch[], int start, int length)
             throws SAXException {
+        captureSourcePosition();
         getDefaultHandler().characters(ch, start, length);
     }
     
@@ -249,6 +288,7 @@ public class InitialDataParser
     @Override
     public void ignorableWhitespace(char ch[], int start, int length)
             throws SAXException {
+        captureSourcePosition();
         getDefaultHandler().ignorableWhitespace(ch, start, length);
     }
     
@@ -256,6 +296,7 @@ public class InitialDataParser
     @Override
     public void processingInstruction(String target, String data)
             throws SAXException {
+        captureSourcePosition();
         getDefaultHandler().processingInstruction(target, data);
     }
     
@@ -281,8 +322,10 @@ public class InitialDataParser
     @Override
     public void fatalError(SAXParseException ex)
             throws SAXException {
-        printError("Fatal Error", ex);
-        throw ex;
+        var location = getSourceLocation(ex.getLineNumber(), ex.getColumnNumber());
+
+        throw new SAXParseException(location + ": " + ex.getMessage(), ex.getPublicId(), ex.getSystemId(),
+                ex.getLineNumber(), ex.getColumnNumber(), ex);
     }
     
     //
@@ -291,33 +334,9 @@ public class InitialDataParser
     
     /** Prints the error message. */
     protected void printError(String type, SAXParseException ex) {
-        var systemId = ex.getSystemId();
+        var location = getSourceLocation(ex.getLineNumber(), ex.getColumnNumber());
 
-        System.err.print("[");
-        System.err.print(type);
-        System.err.print("] ");
-
-        if (ex== null) {
-            System.out.println("!!!");
-        }
-
-        if (systemId != null) {
-            var index = systemId.lastIndexOf('/');
-
-            if (index != -1) {
-                systemId = systemId.substring(index + 1);
-            }
-            
-            System.err.print(systemId);
-        }
-        System.err.print(':');
-        System.err.print(ex.getLineNumber());
-        System.err.print(':');
-        System.err.print(ex.getColumnNumber());
-        System.err.print(": ");
-        System.err.print(ex.getMessage());
-        System.err.println();
-        System.err.flush();
+        System.err.println("[" + type + "] " + location + ": " + ex.getMessage());
     }
     
     //
@@ -331,13 +350,20 @@ public class InitialDataParser
 
     public void execute()
             throws IOException, SAXException, ParserConfigurationException {
+        var resource = name == null ? null : InitialDataParser.class.getResource(name);
+
+        if(resource == null) {
+            var requestedResource = name == null ? "(no resource name specified)" : name;
+            throw new FileNotFoundException("Data Loader XML resource not found " + requestedResource);
+        }
+
         XMLReader parser;
 
         // create parser
         try {
             parser = SAXParserFactory.newInstance().newSAXParser().getXMLReader();
         } catch(Exception e) {
-            System.err.println("error: Unable to instantiate parser");
+            System.err.println("error: Unable to instantiate parser for " + name);
             throw e;
         }
 
@@ -391,7 +417,24 @@ public class InitialDataParser
         // handlers
         setupHandlers();
 
-        parser.parse(new InputSource(InitialDataParser.class.getResource(name).openStream()));
+        var systemId = resource.toExternalForm();
+        try(var inputStream = resource.openStream()) {
+            var inputSource = new InputSource(inputStream);
+            inputSource.setSystemId(systemId);
+            parser.parse(inputSource);
+        } catch(SAXParseException e) {
+            throw e;
+        } catch(SAXException | RuntimeException e) {
+            throw new SAXParseException(getSourceLocation() + ": " + e.getMessage(), null, systemId,
+                    sourceLine, sourceColumn, e);
+        } catch(IOException e) {
+            throw new IOException(getSourceLocation() + ": " + e.getMessage(), e);
+        } finally {
+            documentLocator = null;
+            sourceLine = -1;
+            sourceColumn = -1;
+            elements.clear();
+        }
     }
     
 }
