@@ -2753,46 +2753,46 @@
                 <securityRoleDescription languageIsoName="en" description="Unit of Measure Type Description" />
             </securityRole>
         </securityRoleGroup>
-        <securityRoleGroup securityRoleGroupName="UnitOfMeasureVolume" parentSecurityRoleGroupName="UnitOfMeasure" isDefault="false" sortOrder="1">
-            <securityRoleGroupDescription languageIsoName="en" description="Unit of Measure Volume" />
+        <securityRoleGroup securityRoleGroupName="UnitOfMeasureTypeVolume" parentSecurityRoleGroupName="UnitOfMeasure" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Unit of Measure Type Volume" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Unit of Measure Volume Create" />
+                <securityRoleDescription languageIsoName="en" description="Unit of Measure Type Volume Create" />
             </securityRole>
             <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Unit of Measure Volume Edit" />
+                <securityRoleDescription languageIsoName="en" description="Unit of Measure Type Volume Edit" />
             </securityRole>
             <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Unit of Measure Volume Delete" />
+                <securityRoleDescription languageIsoName="en" description="Unit of Measure Type Volume Delete" />
             </securityRole>
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Unit of Measure Volume List" />
+                <securityRoleDescription languageIsoName="en" description="Unit of Measure Type Volume List" />
             </securityRole>
             <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Unit of Measure Volume Review" />
+                <securityRoleDescription languageIsoName="en" description="Unit of Measure Type Volume Review" />
             </securityRole>
             <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Unit of Measure Volume Choices" />
+                <securityRoleDescription languageIsoName="en" description="Unit of Measure Type Volume Choices" />
             </securityRole>
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Unit of Measure Volume Description" />
+                <securityRoleDescription languageIsoName="en" description="Unit of Measure Type Volume Description" />
             </securityRole>
         </securityRoleGroup>
-        <securityRoleGroup securityRoleGroupName="UnitOfMeasureWeight" parentSecurityRoleGroupName="UnitOfMeasure" isDefault="false" sortOrder="1">
-            <securityRoleGroupDescription languageIsoName="en" description="Unit of Measure Weight" />
+        <securityRoleGroup securityRoleGroupName="UnitOfMeasureTypeWeight" parentSecurityRoleGroupName="UnitOfMeasure" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Unit of Measure Type Weight" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Unit of Measure Weight Create" />
+                <securityRoleDescription languageIsoName="en" description="Unit of Measure Type Weight Create" />
             </securityRole>
             <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Unit of Measure Weight Edit" />
+                <securityRoleDescription languageIsoName="en" description="Unit of Measure Type Weight Edit" />
             </securityRole>
             <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Unit of Measure Weight Delete" />
+                <securityRoleDescription languageIsoName="en" description="Unit of Measure Type Weight Delete" />
             </securityRole>
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Unit of Measure Weight List" />
+                <securityRoleDescription languageIsoName="en" description="Unit of Measure Type Weight List" />
             </securityRole>
             <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Unit of Measure Weight Review" />
+                <securityRoleDescription languageIsoName="en" description="Unit of Measure Type Weight Review" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="VendorComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
@@ -9456,18 +9456,18 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureType" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureType" securityRoleName="Description" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureVolume" securityRoleName="Create" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureVolume" securityRoleName="Edit" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureVolume" securityRoleName="Delete" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureVolume" securityRoleName="List" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureVolume" securityRoleName="Review" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureVolume" securityRoleName="Choices" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureVolume" securityRoleName="Description" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureWeight" securityRoleName="Create" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureWeight" securityRoleName="Edit" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureWeight" securityRoleName="Delete" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureWeight" securityRoleName="List" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureWeight" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureTypeVolume" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureTypeVolume" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureTypeVolume" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureTypeVolume" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureTypeVolume" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureTypeVolume" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureTypeVolume" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureTypeWeight" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureTypeWeight" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureTypeWeight" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureTypeWeight" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureTypeWeight" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="VendorType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="VendorType" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="VendorType" securityRoleName="Delete" />
