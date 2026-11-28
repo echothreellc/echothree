@@ -139,7 +139,7 @@ public class BasicAnalyzer
                 selectedAnalyzer = new SpanishAnalyzer();
             } else if(languageIsoName.equals(Languages.fr.name())) {
                 selectedAnalyzer = new FrenchAnalyzer();
-            } else if(languageIsoName.equals(Languages.jp.name())) {
+            } else if(languageIsoName.equals(Languages.ja.name())) {
                 selectedAnalyzer = new JapaneseAnalyzer();
             } else if(languageIsoName.equals(Languages.ko.name()) || languageIsoName.equals(Languages.zh.name())) {
                 selectedAnalyzer = new CJKAnalyzer();
