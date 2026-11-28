@@ -8598,6 +8598,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="EventGroup" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="UserVisitGroup" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="UserVisitGroup" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="RecoveryQuestion" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Customer" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Customer" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Customer" securityRoleName="Search" />
@@ -9143,6 +9144,8 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="PurchaseOrder" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PurchaseOrder" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PurchaseOrder" securityRoleName="Search" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PurchaseOrderStatus" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PurchaseOrderStatus" securityRoleName="Entry" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyResponsibility" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartySecurityRoleTemplate" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartySkill" securityRoleName="List" />
@@ -9310,7 +9313,6 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="SequenceValue" securityRoleName="Get" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SequenceValue" securityRoleName="GetNext" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ShipmentTypeShippingMethod" securityRoleName="List" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="Shipping" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ShippingMethod" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ShippingMethod" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ShippingMethod" securityRoleName="Delete" />
@@ -9343,6 +9345,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="SubscriptionTypeChain" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SubscriptionTypeChain" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SubscriptionTypeChain" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="SubscriptionTypeChain" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Subscription" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Subscription" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Subscription" securityRoleName="Edit" />
@@ -9458,6 +9461,8 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureVolume" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureVolume" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureVolume" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureVolume" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureVolume" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureWeight" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureWeight" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureWeight" securityRoleName="Delete" />
@@ -9703,6 +9708,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="JobStatus" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="JobStatus" securityRoleName="Enable" />
             <partySecurityRoleTemplateRole securityRoleGroupName="JobStatus" securityRoleName="Disable" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="JobStatus" securityRoleName="Error" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SecurityRoleGroup" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SecurityRoleGroup" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SecurityRoleGroup" securityRoleName="Delete" />
@@ -10198,6 +10204,13 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorTypeCode" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorTypeCode" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorTypeCode" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorCodeType" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorCodeType" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorCodeType" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorCodeType" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorCodeType" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorCodeType" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorCodeType" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorActionType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorActionType" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorActionType" securityRoleName="Delete" />
