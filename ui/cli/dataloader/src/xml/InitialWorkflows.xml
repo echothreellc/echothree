@@ -346,6 +346,14 @@
                 <workflowDestinationDescription languageIsoName="en" description="Approved to Cut Off" />
                 <workflowDestinationStep destinationWorkflowStepName="CUT_OFF" />
             </workflowDestination>
+            <workflowDestination workflowStepName="APPROVED" workflowDestinationName="APPROVED_TO_OVER_POTENTIAL" isDefault="false" sortOrder="1">
+                <workflowDestinationDescription languageIsoName="en" description="Approved to Over Potential Credit Limit" />
+                <workflowDestinationStep destinationWorkflowStepName="OVER_POTENTIAL" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="APPROVED" workflowDestinationName="APPROVED_TO_OVER" isDefault="false" sortOrder="2">
+                <workflowDestinationDescription languageIsoName="en" description="Approved to Over Credit Limit" />
+                <workflowDestinationStep destinationWorkflowStepName="OVER" />
+            </workflowDestination>
             <workflowDestination workflowStepName="CUT_OFF" workflowDestinationName="CUT_OFF_TO_WAIT_APPROVAL" isDefault="true" sortOrder="0">
                 <workflowDestinationDescription languageIsoName="en" description="Cut Off to Waiting Approval" />
                 <workflowDestinationStep destinationWorkflowStepName="WAIT_APPROVAL" />
