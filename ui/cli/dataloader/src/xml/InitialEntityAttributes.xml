@@ -27,7 +27,6 @@
                     <entityAliasTypeDescription languageIsoName="en" description="Test Entity Alias Type" />
                 </entityAliasType>
                 -->
-                <!--
                 <entityAttribute entityAttributeName="EXAMPLE_NAME" entityAttributeTypeName="NAME" trackRevisions="true"
                                  checkContentWebAddress="false" sortOrder="1">
                     <entityAttributeDescription languageIsoName="en" description="Example Name" />
@@ -120,7 +119,6 @@
                         <entityListItemDescription languageIsoName="en" description="Choice 4" />
                     </entityListItem>
                 </entityAttribute>
-                -->
                 <commentType commentTypeName="ITEM_CUSTOMER" workflowName="ITEM_CUSTOMER_COMMENT_STATUS" workflowEntranceName="NEW_REVIEW"
                         mimeTypeUsageTypeName="TEXT" sortOrder="0">
                     <commentTypeDescription languageIsoName="en" description="Customer" />
