@@ -170,6 +170,7 @@ public enum ExecutionErrors {
     DuplicateSelectorNodeTypeDescription,
     DuplicateSelectorNodeTypeName,
     DuplicateSelectorTextSearchTypeDescription,
+    DuplicateSelectorTextSearchTypeName,
     UnknownSelectorTypeDescription,
     DuplicateSelectorTypeDescription,
     DuplicateSequenceChecksumTypeDescription,

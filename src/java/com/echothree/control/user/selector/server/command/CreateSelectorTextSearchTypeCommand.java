@@ -69,7 +69,7 @@ public class CreateSelectorTextSearchTypeCommand
             
             selectorControl.createSelectorTextSearchType(selectorTextSearchTypeName, isDefault, sortOrder, getPartyPK());
         } else {
-            addExecutionError(ExecutionErrors.UnknownSelectorTextSearchTypeName.name(), selectorTextSearchTypeName);
+            addExecutionError(ExecutionErrors.DuplicateSelectorTextSearchTypeName.name(), selectorTextSearchTypeName);
         }
         
         return null;
