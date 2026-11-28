@@ -880,7 +880,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Communication Event" />
                 <workflowEntranceStep entranceWorkflowStepName="CLASSIFY" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="CommunicationEvents" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="CommunicationEvent" />
         </workflow>
         <workflow workflowName="OUTGOING_CUSTOMER_EMAIL" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Outgoing Customer Email" />
@@ -899,7 +899,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Communication Event Send" />
                 <workflowEntranceStep entranceWorkflowStepName="SEND" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="CommunicationEvents" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="CommunicationEvent" />
         </workflow>
         <workflow workflowName="PARTY_CONTACT_LIST_STATUS" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Party Contact List Status" />
