@@ -28,28 +28,28 @@
                 </entityAliasType>
                 -->
                 <entityAttribute entityAttributeName="EXAMPLE_NAME" entityAttributeTypeName="NAME" trackRevisions="true"
-                                 checkContentWebAddress="false" sortOrder="1">
+                                 sortOrder="1">
                     <entityAttributeDescription languageIsoName="en" description="Example Name" />
                     <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
                 </entityAttribute>
                 <entityAttribute entityAttributeName="EXAMPLE_INTEGER" entityAttributeTypeName="INTEGER" trackRevisions="true"
-                                 checkContentWebAddress="false" sortOrder="1">
+                                 sortOrder="1">
                     <entityAttributeDescription languageIsoName="en" description="Example Integer" />
                     <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
                 </entityAttribute>
                 <entityAttribute entityAttributeName="EXAMPLE_LONG" entityAttributeTypeName="LONG" trackRevisions="true"
-                                 checkContentWebAddress="false" sortOrder="1">
+                                 sortOrder="1">
                     <entityAttributeDescription languageIsoName="en" description="Example Long" />
                     <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
                 </entityAttribute>
                 <entityAttribute entityAttributeName="EXAMPLE_BOOLEAN" entityAttributeTypeName="BOOLEAN" trackRevisions="true"
                                  sortOrder="1">
                     <entityAttributeDescription languageIsoName="en" description="Example Boolean" />
-                    <entityBooleanDefault booleanAttribute="true" />
+                    <entityBooleanDefault booleanAttribute="true" addMissingAttributes="false" />
                     <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
                 </entityAttribute>
                 <entityAttribute entityAttributeName="EXAMPLE_STRING" entityAttributeTypeName="STRING" trackRevisions="true"
-                                 checkContentWebAddress="false" sortOrder="1">
+                                 sortOrder="1">
                     <entityAttributeDescription languageIsoName="en" description="Example String" />
                     <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
                 </entityAttribute>
@@ -59,34 +59,34 @@
                     <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
                 </entityAttribute>
                 <entityAttribute entityAttributeName="EXAMPLE_CLOB" entityAttributeTypeName="CLOB" trackRevisions="true"
-                                 checkContentWebAddress="false" sortOrder="1">
+                                 sortOrder="1">
                     <entityAttributeDescription languageIsoName="en" description="Example CLOB" />
                     <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
                 </entityAttribute>
                 <entityAttribute entityAttributeName="EXAMPLE_ENTITY" entityAttributeTypeName="ENTITY" trackRevisions="true"
-                                 checkContentWebAddress="false" sortOrder="1">
+                                 sortOrder="1">
                     <entityAttributeDescription languageIsoName="en" description="Example Entity" />
                     <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
                     <entityAttributeEntityType allowedComponentVendorName="ECHO_THREE" allowedEntityTypeName="Forum" />
                 </entityAttribute>
                 <entityAttribute entityAttributeName="EXAMPLE_COLLECTION" entityAttributeTypeName="COLLECTION" trackRevisions="true"
-                                 checkContentWebAddress="false" sortOrder="1">
+                                 sortOrder="1">
                     <entityAttributeDescription languageIsoName="en" description="Example Collection" />
                     <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
                     <entityAttributeEntityType allowedComponentVendorName="ECHO_THREE" allowedEntityTypeName="Forum" />
                 </entityAttribute>
                 <entityAttribute entityAttributeName="EXAMPLE_DATE" entityAttributeTypeName="DATE" trackRevisions="true"
-                                 checkContentWebAddress="false" sortOrder="1">
+                                 sortOrder="1">
                     <entityAttributeDescription languageIsoName="en" description="Example Date" />
                     <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
                 </entityAttribute>
                 <entityAttribute entityAttributeName="EXAMPLE_TIME" entityAttributeTypeName="TIME" trackRevisions="true"
-                                 checkContentWebAddress="false" sortOrder="1">
+                                 sortOrder="1">
                     <entityAttributeDescription languageIsoName="en" description="Example Time" />
                     <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
                 </entityAttribute>
                 <entityAttribute entityAttributeName="EXAMPLE_LISTITEM" entityAttributeTypeName="LISTITEM" trackRevisions="true"
-                                 checkContentWebAddress="false" sortOrder="1">
+                                 sortOrder="1">
                     <entityAttributeDescription languageIsoName="en" description="Example List Item" />
                     <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
                     <entityListItem entityListItemName="CHOICE_1" isDefault="true" sortOrder="1">
@@ -103,7 +103,7 @@
                     </entityListItem>
                 </entityAttribute>
                 <entityAttribute entityAttributeName="EXAMPLE_MULTIPLELISTITEM" entityAttributeTypeName="MULTIPLELISTITEM" trackRevisions="true"
-                                 checkContentWebAddress="false" sortOrder="1">
+                                 sortOrder="1">
                     <entityAttributeDescription languageIsoName="en" description="Example Multiple List Item" />
                     <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
                     <entityListItem entityListItemName="CHOICE_1" isDefault="true" sortOrder="1">
