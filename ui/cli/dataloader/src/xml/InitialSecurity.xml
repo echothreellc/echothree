@@ -2753,46 +2753,46 @@
                 <securityRoleDescription languageIsoName="en" description="Unit of Measure Type Description" />
             </securityRole>
         </securityRoleGroup>
-        <securityRoleGroup securityRoleGroupName="UnitOfMeasureVolume" parentSecurityRoleGroupName="UnitOfMeasure" isDefault="false" sortOrder="1">
-            <securityRoleGroupDescription languageIsoName="en" description="Unit of Measure Volume" />
+        <securityRoleGroup securityRoleGroupName="UnitOfMeasureTypeVolume" parentSecurityRoleGroupName="UnitOfMeasure" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Unit of Measure Type Volume" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Unit of Measure Volume Create" />
+                <securityRoleDescription languageIsoName="en" description="Unit of Measure Type Volume Create" />
             </securityRole>
             <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Unit of Measure Volume Edit" />
+                <securityRoleDescription languageIsoName="en" description="Unit of Measure Type Volume Edit" />
             </securityRole>
             <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Unit of Measure Volume Delete" />
+                <securityRoleDescription languageIsoName="en" description="Unit of Measure Type Volume Delete" />
             </securityRole>
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Unit of Measure Volume List" />
+                <securityRoleDescription languageIsoName="en" description="Unit of Measure Type Volume List" />
             </securityRole>
             <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Unit of Measure Volume Review" />
+                <securityRoleDescription languageIsoName="en" description="Unit of Measure Type Volume Review" />
             </securityRole>
             <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Unit of Measure Volume Choices" />
+                <securityRoleDescription languageIsoName="en" description="Unit of Measure Type Volume Choices" />
             </securityRole>
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Unit of Measure Volume Description" />
+                <securityRoleDescription languageIsoName="en" description="Unit of Measure Type Volume Description" />
             </securityRole>
         </securityRoleGroup>
-        <securityRoleGroup securityRoleGroupName="UnitOfMeasureWeight" parentSecurityRoleGroupName="UnitOfMeasure" isDefault="false" sortOrder="1">
-            <securityRoleGroupDescription languageIsoName="en" description="Unit of Measure Weight" />
+        <securityRoleGroup securityRoleGroupName="UnitOfMeasureTypeWeight" parentSecurityRoleGroupName="UnitOfMeasure" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Unit of Measure Type Weight" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Unit of Measure Weight Create" />
+                <securityRoleDescription languageIsoName="en" description="Unit of Measure Type Weight Create" />
             </securityRole>
             <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Unit of Measure Weight Edit" />
+                <securityRoleDescription languageIsoName="en" description="Unit of Measure Type Weight Edit" />
             </securityRole>
             <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Unit of Measure Weight Delete" />
+                <securityRoleDescription languageIsoName="en" description="Unit of Measure Type Weight Delete" />
             </securityRole>
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Unit of Measure Weight List" />
+                <securityRoleDescription languageIsoName="en" description="Unit of Measure Type Weight List" />
             </securityRole>
             <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Unit of Measure Weight Review" />
+                <securityRoleDescription languageIsoName="en" description="Unit of Measure Type Weight Review" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="VendorComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
@@ -3484,11 +3484,17 @@
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Work Assignment List" />
             </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Work Assignment Review" />
+            </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="WorkTime" parentSecurityRoleGroupName="WorkRequirementComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Work Time" />
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Work Time List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Work Time Review" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="WorkRequirementType" parentSecurityRoleGroupName="WorkRequirementComponent" isDefault="false" sortOrder="1">
@@ -3528,6 +3534,12 @@
             </securityRole>
             <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Work Requirement Scope Review" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="PartyResponsibility" parentSecurityRoleGroupName="EmployeeComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Party Responsibility" />
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Party Responsibility List" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="ResponsibilityType" parentSecurityRoleGroupName="EmployeeComponent" isDefault="false" sortOrder="1">
@@ -6284,6 +6296,30 @@
                 <securityRoleDescription languageIsoName="en" description="Payment Processor Type Action" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="PaymentProcessorTypeCode" parentSecurityRoleGroupName="PaymentComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Payment Processor Type Code" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Payment Processor Type Code Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Payment Processor Type Code Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Payment Processor Type Code Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Payment Processor Type Code List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Payment Processor Type Code Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Payment Processor Type Code Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Payment Processor Type Code Description" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="PaymentProcessorTypeCodeType" parentSecurityRoleGroupName="PaymentComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Payment Processor Type Code Type" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -8562,6 +8598,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="EventGroup" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="UserVisitGroup" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="UserVisitGroup" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="RecoveryQuestion" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Customer" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Customer" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Customer" securityRoleName="Search" />
@@ -9021,8 +9058,6 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="Offer" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Offer" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Offer" securityRoleName="Description" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="Offer" securityRoleName="OfferChainType" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="Offer" securityRoleName="OfferCustomerType" />
             <partySecurityRoleTemplateRole securityRoleGroupName="OfferNameElement" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="OfferNameElement" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="OfferNameElement" securityRoleName="Delete" />
@@ -9109,6 +9144,8 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="PurchaseOrder" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PurchaseOrder" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PurchaseOrder" securityRoleName="Search" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PurchaseOrderStatus" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PurchaseOrderStatus" securityRoleName="Entry" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyResponsibility" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartySecurityRoleTemplate" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartySkill" securityRoleName="List" />
@@ -9276,7 +9313,6 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="SequenceValue" securityRoleName="Get" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SequenceValue" securityRoleName="GetNext" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ShipmentTypeShippingMethod" securityRoleName="List" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="Shipping" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ShippingMethod" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ShippingMethod" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ShippingMethod" securityRoleName="Delete" />
@@ -9309,6 +9345,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="SubscriptionTypeChain" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SubscriptionTypeChain" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SubscriptionTypeChain" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="SubscriptionTypeChain" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Subscription" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Subscription" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Subscription" securityRoleName="Edit" />
@@ -9419,16 +9456,18 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureType" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureType" securityRoleName="Description" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureVolume" securityRoleName="Create" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureVolume" securityRoleName="Edit" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureVolume" securityRoleName="Delete" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureVolume" securityRoleName="List" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureVolume" securityRoleName="Review" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureWeight" securityRoleName="Create" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureWeight" securityRoleName="Edit" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureWeight" securityRoleName="Delete" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureWeight" securityRoleName="List" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureWeight" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureTypeVolume" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureTypeVolume" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureTypeVolume" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureTypeVolume" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureTypeVolume" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureTypeVolume" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureTypeVolume" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureTypeWeight" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureTypeWeight" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureTypeWeight" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureTypeWeight" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="UnitOfMeasureTypeWeight" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="VendorType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="VendorType" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="VendorType" securityRoleName="Delete" />
@@ -9669,6 +9708,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="JobStatus" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="JobStatus" securityRoleName="Enable" />
             <partySecurityRoleTemplateRole securityRoleGroupName="JobStatus" securityRoleName="Disable" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="JobStatus" securityRoleName="Error" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SecurityRoleGroup" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SecurityRoleGroup" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SecurityRoleGroup" securityRoleName="Delete" />
@@ -10164,6 +10204,13 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorTypeCode" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorTypeCode" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorTypeCode" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorCodeType" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorCodeType" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorCodeType" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorCodeType" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorCodeType" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorCodeType" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorCodeType" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorActionType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorActionType" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorActionType" securityRoleName="Delete" />

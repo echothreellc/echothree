@@ -32,6 +32,8 @@ public interface CustomerCreditStatusConstants {
     String WorkflowEntrance_WAITING_APPROVAL = "WAITING_APPROVAL";
     
     String WorkflowDestination_APPROVED_TO_CUT_OFF                = "APPROVED_TO_CUT_OFF";
+    String WorkflowDestination_APPROVED_TO_OVER_POTENTIAL         = "APPROVED_TO_OVER_POTENTIAL";
+    String WorkflowDestination_APPROVED_TO_OVER                   = "APPROVED_TO_OVER";
     String WorkflowDestination_CUT_OFF_TO_WAIT_APPROVAL           = "CUT_OFF_TO_WAIT_APPROVAL";
     String WorkflowDestination_OVER_POTENTIAL_TO_APPROVED         = "OVER_POTENTIAL_TO_APPROVED";
     String WorkflowDestination_OVER_POTENTIAL_TO_WAIT_INFORMATION = "OVER_POTENTIAL_TO_WAIT_INFORMATION";

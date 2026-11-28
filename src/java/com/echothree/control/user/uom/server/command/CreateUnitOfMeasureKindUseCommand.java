@@ -58,34 +58,26 @@ public class CreateUnitOfMeasureKindUseCommand
         var unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
         
         if(unitOfMeasureKindUseType != null) {
-            var multipleUseError = false;
-            
-            if(!unitOfMeasureKindUseType.getAllowMultiple()) {
-                if(uomControl.countUnitOfMeasureKindUsesByUnitOfMeasureKindUseType(unitOfMeasureKindUseType) != 0)
-                    multipleUseError = true;
-            }
-            
-            if(!multipleUseError) {
-                var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
-                var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
-                
-                if(unitOfMeasureKind != null) {
-                    var unitOfMeasureKindUse = uomControl.getUnitOfMeasureKindUse(unitOfMeasureKindUseType, unitOfMeasureKind);
-                    
-                    if(unitOfMeasureKindUse == null) {
-                        var isDefault = Boolean.valueOf(form.getIsDefault());
-                        var sortorder = Integer.valueOf(form.getSortOrder());
-                        
-                        uomControl.createUnitOfMeasureKindUse(unitOfMeasureKindUseType, unitOfMeasureKind, isDefault, sortorder,
-                                getPartyPK());
-                    } else {
-                        addExecutionError(ExecutionErrors.DuplicateUnitOfMeasureKindUse.name());
-                    }
+            var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
+            var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+
+            if(unitOfMeasureKind != null) {
+                var unitOfMeasureKindUse = uomControl.getUnitOfMeasureKindUse(unitOfMeasureKindUseType, unitOfMeasureKind);
+
+                if(unitOfMeasureKindUse != null) {
+                    addExecutionError(ExecutionErrors.DuplicateUnitOfMeasureKindUse.name(), unitOfMeasureKindUseTypeName, unitOfMeasureKindName);
+                } else if(!unitOfMeasureKindUseType.getAllowMultiple()
+                        && uomControl.countUnitOfMeasureKindUsesByUnitOfMeasureKindUseType(unitOfMeasureKindUseType) != 0) {
+                    addExecutionError(ExecutionErrors.MultipleUnitOfMeasureKindUsesNotAllowed.name(), unitOfMeasureKindUseTypeName, unitOfMeasureKindName);
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownUnitOfMeasureKindName.name(), unitOfMeasureKindName);
+                    var isDefault = Boolean.valueOf(form.getIsDefault());
+                    var sortOrder = Integer.valueOf(form.getSortOrder());
+
+                    uomControl.createUnitOfMeasureKindUse(unitOfMeasureKindUseType, unitOfMeasureKind, isDefault, sortOrder,
+                            getPartyPK());
                 }
             } else {
-                addExecutionError(ExecutionErrors.MultipleUnitOfMeasureKindUsesNotAllowed.name());
+                addExecutionError(ExecutionErrors.UnknownUnitOfMeasureKindName.name(), unitOfMeasureKindName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownUnitOfMeasureKindUseTypeName.name(), unitOfMeasureKindUseTypeName);
