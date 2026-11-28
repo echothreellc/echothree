@@ -91,7 +91,8 @@ public class CreateRatingTypeListItemCommand
                                     partyPK);
                         }
                     } else {
-                        addExecutionError(ExecutionErrors.UnknownRatingTypeListItemName.name(), ratingTypeListItemName);
+                        addExecutionError(ExecutionErrors.DuplicateRatingTypeListItemName.name(),
+                                componentVendorName, entityTypeName, ratingTypeName, ratingTypeListItemName);
                     }
                 } else {
                     addExecutionError(ExecutionErrors.UnknownRatingTypeName.name(), ratingTypeName);
