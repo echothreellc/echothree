@@ -392,7 +392,7 @@
             </workflowEntrance>
             <workflowEntrance workflowEntranceName="WAITING_APPROVAL" isDefault="false" sortOrder="0">
                 <workflowEntranceDescription languageIsoName="en" description="Waiting for Approval" />
-                <workflowEntranceStep entranceWorkflowStepName="WAITING_APPROVAL" />
+                <workflowEntranceStep entranceWorkflowStepName="WAIT_APPROVAL" />
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Party" />
         </workflow>
