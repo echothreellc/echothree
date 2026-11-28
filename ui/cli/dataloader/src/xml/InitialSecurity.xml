@@ -3484,11 +3484,17 @@
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Work Assignment List" />
             </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Work Assignment Review" />
+            </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="WorkTime" parentSecurityRoleGroupName="WorkRequirementComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Work Time" />
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Work Time List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Work Time Review" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="WorkRequirementType" parentSecurityRoleGroupName="WorkRequirementComponent" isDefault="false" sortOrder="1">
@@ -3528,6 +3534,12 @@
             </securityRole>
             <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Work Requirement Scope Review" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="PartyResponsibility" parentSecurityRoleGroupName="EmployeeComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Party Responsibility" />
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Party Responsibility List" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="ResponsibilityType" parentSecurityRoleGroupName="EmployeeComponent" isDefault="false" sortOrder="1">
@@ -6284,6 +6296,30 @@
                 <securityRoleDescription languageIsoName="en" description="Payment Processor Type Action" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="PaymentProcessorTypeCode" parentSecurityRoleGroupName="PaymentComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Payment Processor Type Code" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Payment Processor Type Code Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Payment Processor Type Code Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Payment Processor Type Code Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Payment Processor Type Code List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Payment Processor Type Code Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Payment Processor Type Code Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Payment Processor Type Code Description" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="PaymentProcessorTypeCodeType" parentSecurityRoleGroupName="PaymentComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Payment Processor Type Code Type" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -9021,8 +9057,6 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="Offer" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Offer" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Offer" securityRoleName="Description" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="Offer" securityRoleName="OfferChainType" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="Offer" securityRoleName="OfferCustomerType" />
             <partySecurityRoleTemplateRole securityRoleGroupName="OfferNameElement" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="OfferNameElement" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="OfferNameElement" securityRoleName="Delete" />
