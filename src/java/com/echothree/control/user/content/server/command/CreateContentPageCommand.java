@@ -108,7 +108,7 @@ public class CreateContentPageCommand
                         }
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownContentPageName.name(), contentPageName);
+                    addExecutionError(ExecutionErrors.DuplicateContentPageName.name(), contentCollectionName, contentSectionName, contentPageName);
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownContentSectionName.name(), contentSectionName);

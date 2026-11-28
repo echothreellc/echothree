@@ -158,7 +158,7 @@ public class CreateContentCatalogCommand
                     }
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownContentCatalogName.name(), contentCatalogName);
+                addExecutionError(ExecutionErrors.DuplicateContentCatalogName.name(), contentCollectionName, contentCatalogName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownContentCollectionName.name(), contentCollectionName);

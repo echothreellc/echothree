@@ -22,7 +22,7 @@ public enum Languages {
     de,
     es,
     fr,
-    jp,
+    ja,
     ko,
     zh,
 

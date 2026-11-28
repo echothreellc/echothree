@@ -776,10 +776,10 @@
         </paymentProcessor>
     </paymentProcessors>
     <paymentMethods>
-<!--
         <paymentMethod paymentMethodTypeName="ACCOUNT" paymentMethodName="PURCHASE_ORDER" isDefault="false" sortOrder="3">
             <paymentMethodDescription languageIsoName="en" description="Purchase Order" />
         </paymentMethod>
+<!--
         <paymentMethod paymentMethodTypeName="CHECK" paymentMethodName="PERSONAL_CHECK" isDefault="false" sortOrder="2"
             holdDays="28">
             <paymentMethodDescription languageIsoName="en" description="Personal Check" />

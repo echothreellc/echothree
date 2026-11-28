@@ -31,9 +31,9 @@
             <languageDescription descriptionLanguageIsoName="en" description="French" />
             <languageDescription descriptionLanguageIsoName="fr" description="Français" />
         </language>
-        <language languageIsoName="jp" isDefault="false" sortOrder="2">
+        <language languageIsoName="ja" isDefault="false" sortOrder="2">
             <languageDescription descriptionLanguageIsoName="en" description="Japanese" />
-            <languageDescription descriptionLanguageIsoName="jp" description="日本語" />
+            <languageDescription descriptionLanguageIsoName="ja" description="日本語" />
         </language>
         <language languageIsoName="ko" isDefault="false" sortOrder="2">
             <languageDescription descriptionLanguageIsoName="en" description="Korean" />

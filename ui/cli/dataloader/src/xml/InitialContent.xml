@@ -156,7 +156,8 @@
                     <!-- <contentCategoryItem itemName="MINIMAL" inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" currencyIsoName="USD" isDefault="false" sortOrder="1" /> -->
                 </contentCategory>
             </contentCatalog>
-            <contentForum forumName="TEST_FORUM" sortOrder="1" isDefault="true" />
+            <contentForum forumName="TEST_BLOG_1" sortOrder="1" isDefault="true" />
+            <contentForum forumName="TEST_BLOG_2" sortOrder="2" isDefault="false" />
         </contentCollection>
     </contentCollections>
     <contentWebAddresses>
